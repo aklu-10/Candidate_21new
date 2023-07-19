@@ -11,10 +11,11 @@ const Select = ({fieldName, fieldLabel, fieldOptions, fieldClass, onClick}) => {
     {
         let keys = fieldName.split(".");
 
-        if(keys.includes("managedBy"))
+        if(keys.length===2)
+            setMasterData((prev)=>({...prev, forms: { ...prev.forms, [keys[0]] : { ...prev.forms[keys[0]], [keys[1]]: e.target.value }}}));
+        else if(keys.length===3)
             setMasterData((prev)=>({...prev, forms: {...prev.forms, [keys[0]]: { ...prev.forms[keys[0]], [keys[1]]: { ...prev.forms[keys[0]][keys[1]], [keys[2]]: e.target.value }}}}))
-        else
-            setMasterData((prev)=>({...prev, forms: {...prev.forms, [keys[0]]: { ...prev.forms[keys[0]], [keys[1]]: e.target.value }}}));
+        
     }
 
     return (
@@ -26,10 +27,19 @@ const Select = ({fieldName, fieldLabel, fieldOptions, fieldClass, onClick}) => {
         <Label labelName={fieldLabel} labelFor={fieldName}/>
         }
         
-        <select className='w-[100%] p-2 border bg-white rounded' onClick={onClick ?? handleSelectChange}>
+        <select className='w-[100%] p-2 border bg-white rounded' onClick={onClick ?? handleSelectChange} >
+
+            {
+                (fieldName.split(".").length==1) && <option selected disabled>Please Select {fieldName} </option>
+            }
+
             {
                 fieldOptions.map((option, index)=>(
-                    <option key={index} value={option}>{option}</option>
+
+                    (typeof option === 'object')
+                    ? <option key={index} value={option.value}>{option.value}</option>
+                    : <option key={index} value={option}>{option}</option>
+
                 ))
             }
         </select>

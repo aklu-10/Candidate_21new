@@ -21,15 +21,17 @@ const RandomQuestions = ({formSectionKey}) => {
                 fieldPattern="^[0-9]\d*"
                 fieldClass="w-[500px]"
                 fieldPlaceHolder="Random Questions"
+                allowDebounce={true}
             />
+
             <Field
-                control="selectlib"
+                control="select"
                 fieldName={`${formSectionKey}.randomQuestions.technology`}
                 fieldLabel="Technology"
-                fieldPlaceHolder="Select"
                 fieldOptions={testTypeOptions}
                 fieldClass="w-[500px]"
             />
+            
             <div className="flex flex-wrap justify-between">
                 <Field
                     control="input"

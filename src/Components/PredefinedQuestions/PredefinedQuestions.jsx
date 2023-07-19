@@ -4,18 +4,17 @@ import FormContext from '../../context/FormContext';
 import Button from '../Button/Button';
 import { DataGrid } from '@mui/x-data-grid';
 import { useContext } from 'react';
-import { toast } from 'react-toastify';
-import Label from '../Label/Label';
 import AddNewQuestion from '../AddNewQuestion/AddNewQuestion';
-// import { DataGrid } from '@mui/x-data-grid';
+import { toast } from 'react-toastify';
+import axios from 'axios';
 
 
 const columns = [
-    { field: 'id', headerName: 'Question Title', width: 350 },
-    { field: 'firstName', headerName: 'Question Level', width: 200 },
-    { field: 'lastName', headerName: 'Technology', width: 200 },
+    { field: 'title', headerName: 'Question Title', width: 400 },
+    { field: 'level', headerName: 'Question Level', width: 200 },
+    { field: 'technology', headerName: 'Technology', width: 200 },
     {
-    field: 'age',
+    field: 'questionType',
     headerName: 'Question Type',
     width: 350,
     },
@@ -41,9 +40,13 @@ const PredefinedQuestions = ({formSectionKey}) => {
 
     const [showAddNewForm, setShowAddNewForm] = useState(false);
 
+    //table rows
+    const [rows, setRows] = useState([]);
+
     let testTypeOptions = [
-        { label: 'coding', value: 'coding' },
-        { label: 'screening', value: 'screening' }
+        { label: 'Python', value: 'Python' },
+        { label: 'java', value: 'java' },
+        { label: 'php', value: 'php' }
     ]
 
     // function handleInputChange(e)
@@ -54,6 +57,39 @@ const PredefinedQuestions = ({formSectionKey}) => {
     //     if(totalPredefined+totalRandom > formData.totalQuestions)
     //         toast.error("Value exceeded from the provided value.") 
     // }
+
+    function fetchTechQueryBaseData()
+    {
+        let techArr = masterData.forms[formSectionKey].predefinedQuestions.technology.map(tech=>tech.value);
+        let quesArr = masterData.forms[formSectionKey].predefinedQuestions.questionType;
+        if(!techArr.length || !quesArr.length)
+            toast.error("Please provide required technology or question type")
+        else
+        {
+            axios.get("http://localhost:3000/techs")
+            .then(({data})=>{
+                
+                let baseData = [];
+                Object.keys(data).filter(tech=>(
+                    techArr.includes(tech)
+                )).map(tech=>(
+                    baseData= [...baseData, ...data[tech]]
+                ))
+
+                setRows([...baseData.map((eachRow, index)=>{
+                    return {
+                        id:index,
+                        title:eachRow.question,
+                        level:1,
+                        technology:'Python'
+                    }
+                })]);
+
+            })
+            .catch(console.log)
+        }
+        
+    }
 
     function handleAddNewForm()
     {
@@ -82,7 +118,8 @@ const PredefinedQuestions = ({formSectionKey}) => {
                     fieldLabel="Technology"
                     fieldPlaceHolder="Technology"
                     fieldOptions={testTypeOptions}
-                    fieldClass="w-[400px]"
+                    fieldClass="w-[400px] z-10"
+
                 />
 
 
@@ -98,6 +135,7 @@ const PredefinedQuestions = ({formSectionKey}) => {
                 
                 <Button
                     btnClass='rounded bg-blue-600 w-[80px] text-white p-2 mr-[2px] mt-[35px]'
+                    onClick={fetchTechQueryBaseData}
                 >
                     Search
                 </Button>

@@ -7,7 +7,10 @@ import { toast } from 'react-toastify';
 const AddNewQuestion = ({setShowAddNewForm}) => {
 
     const [addNewQuestionData, setAddNewQuestionState] = useState({
-        options:{ option1:{ value:'', isCorrect:false } }
+        technology:'',
+        questionType:'',
+        questionTitle:'',
+        options:{ option1:{ value:'', isCorrect:false }, }
     });
 
     function handleAddNewInput(fieldName, e)
@@ -26,7 +29,20 @@ const AddNewQuestion = ({setShowAddNewForm}) => {
 
     function addNewQuestionOnBoard()
     {   
+
         console.log(addNewQuestionData);
+        setShowAddNewForm(false)
+    }
+
+    function saveAndNewQuestionOnBoard()
+    {
+        console.log(addNewQuestionData);
+        setShowAddNewForm(false)
+        setTimeout(()=>
+        {
+            setShowAddNewForm(true)
+        },10)
+
     }
 
     function handleAddNewOption()
@@ -107,7 +123,8 @@ const AddNewQuestion = ({setShowAddNewForm}) => {
                     fieldLabel="Question Title"
                     fieldPlaceHolder="Question Title"
                     fieldClass="w-[500px]"
-                    onClick={(e)=>handleAddNewInput("questionTitle", e)}
+                    allowDebounce={true}
+                    onChange={(e)=>handleAddNewInput("questionTitle", e)}
                 />
 
 
@@ -124,7 +141,7 @@ const AddNewQuestion = ({setShowAddNewForm}) => {
                         
                             Object.keys(addNewQuestionData.options).map((option, index)=>(
                                 <div key={index} className='flex items-center justify-between'>
-
+                                    {console.log(option)}
                                     <Field
                                         control="input"
                                         fieldName={option}
@@ -166,6 +183,7 @@ const AddNewQuestion = ({setShowAddNewForm}) => {
                     </Button>
                     <Button
                         btnClass={'rounded bg-blue-600 text-white p-2 mr-[20px]'}
+                        onClick={saveAndNewQuestionOnBoard}
                         >
                         Save & Create New 
                     </Button>

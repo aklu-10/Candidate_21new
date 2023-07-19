@@ -4,12 +4,12 @@ import TabSwitch from '../TabSwitch/TabSwitch';
 import RandomQuestions from "../RandomQuestions/RandomQuestions";
 import PredefinedQuestions from "../PredefinedQuestions/PredefinedQuestions";
 import FormContext from "../../context/FormContext";
-import Button from "../Button/Button";
 import { useContext } from "react";
+import { candidateTestSectionBaseData } from "../../data/candidateTestSectionBaseData";
 
 const CandidateTestSection = ({formSectionKey}) => {
     
-    const {masterData, setMasterData} = useContext(FormContext);
+    const {masterData, setMasterData, formIndex} = useContext(FormContext);
 
     let testTypeOptions = [
             { label: 'coding', value: 'coding' },
@@ -18,9 +18,17 @@ const CandidateTestSection = ({formSectionKey}) => {
 
     console.log("Candidate Section")
 
+    function handleAddNewFormSection()
+    {
+
+        setMasterData((prev)=>({...prev, forms:{ ...prev.forms, ["form"+(formIndex.current+1)] : {...candidateTestSectionBaseData}}}))
+
+        formIndex.current+=1;
+    }
+
     return (
         <div>
-            <div className="flex">
+            <div className="flex items-center">
                 <Field
                 control="input"
                 fieldName={`${formSectionKey}.testName`}
@@ -31,7 +39,7 @@ const CandidateTestSection = ({formSectionKey}) => {
                 fieldClass="w-[500px]"
                 />
 
-                <span className="text-green-600/100 text-xl">&#8853;</span>
+                <span className="text-green-600/100 text-xl mt-[25px] ml-[20px] cursor-pointer" onClick={handleAddNewFormSection}>&#8853;</span>
             </div>
 
             <Field
@@ -78,6 +86,7 @@ const CandidateTestSection = ({formSectionKey}) => {
                 fieldErrorMsg="Value must be an positive number"
                 fieldPattern="^[0-9]\d*"
                 fieldClass="w-[500px]"
+                allowDebounce={true}
             />
 
             <TabSwitch
@@ -88,27 +97,7 @@ const CandidateTestSection = ({formSectionKey}) => {
                 ]}
             />
 
-            <div>
-                <Button
-                    btnClass={
-                        !masterData._isValid
-                        ? "rounded bg-blue-600 text-white p-2 mr-[20px]"
-                        : "rounded bg-gray-600 text-white p-2 mr-[20px]"
-                    }
-                    isBtnDisabled={masterData._isValid}
-                    btnType="submit"
-                >
-                Submit Candidate Test
-                </Button>
-
-                <Button
-                    btnClass={"rounded bg-gray-600 text-white p-2"}
-                    isBtnDisabled={masterData._isValid}
-                    btnType="button"
-                >
-                Final Submit
-                </Button>
-            </div>
+          
         </div>
     );
 };

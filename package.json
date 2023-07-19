@@ -36,5 +36,17 @@
     "postcss": "^8.4.26",
     "tailwindcss": "^3.3.3",
     "vite": "^4.4.0"
-  }
+  },
+  "main": "postcss.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aklu-10/Candidate_19-07-23.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aklu-10/Candidate_19-07-23/issues"
+  },
+  "homepage": "https://github.com/aklu-10/Candidate_19-07-23#readme",
+  "description": ""
 }

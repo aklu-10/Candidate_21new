@@ -5,8 +5,6 @@ import React, { useRef, useState } from 'react'
 
 const TabSwitch = ({totalQuestions, tabs}) => {
 
-  console.log(totalQuestions)
-
     if(!totalQuestions || totalQuestions <= 0 ) return;
 
     const [currentTab, setCurrentTab] = useState(tabs[0]);
