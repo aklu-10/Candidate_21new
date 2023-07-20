@@ -18,19 +18,6 @@ const columns = [
     headerName: 'Question Type',
     width: 350,
     },
-    // {
-    //   field: 'fullName',
-    //   headerName: 'Full name',
-    //   description: 'This column has a value getter and is not sortable.',
-    //   sortable: false,
-    //   width: 160,
-    //   valueGetter: (params) =>
-    //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
-    // },
-];
-
-const rows = [
-    // { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
 ];
 
 
@@ -58,19 +45,12 @@ const PredefinedQuestions = ({formSectionKey}) => {
         { label: 'descriptive', value: 'descriptive' }
     ]
 
-    // function handleInputChange(e)
-    // {
-    //     let totalPredefined = Number(e.target.value);
-    //     let totalRandom = Number(formData.randomQuestions.totalQuestions);
-
-    //     if(totalPredefined+totalRandom > formData.totalQuestions)
-    //         toast.error("Value exceeded from the provided value.") 
-    // }
-
     function fetchTechQueryBaseData()
     {
         let techArr = masterData.forms[formSectionKey].predefinedQuestions.technology.map(tech=>tech.value);
+        
         let quesArr = masterData.forms[formSectionKey].predefinedQuestions.questionType;
+
         if(!techArr.length || !quesArr.length)
             toast.error("Please provide required technology or question type")
         else
@@ -83,12 +63,13 @@ const PredefinedQuestions = ({formSectionKey}) => {
 
             Promise.all(apiArr)
             .then((res)=>{
+
                 let result = [];
                 res.map(({data})=>(
                     result = [...result, ...data]
                 ))
 
-                setRows(result.map((question, index)=>(
+                let allData = result.map((question, index)=>(
                         
                         {
                             id:index,
@@ -96,32 +77,12 @@ const PredefinedQuestions = ({formSectionKey}) => {
                             level:1,
                             technology:'Technology'
                         }
-                    )))
+                    ))
+                
+                setRows(allData.reverse())
             })
             .catch(console.log)
 
-
-            // axios.get("http://localhost:3000/allQuestions")
-            // .then(({data})=>
-            // {
-            //     let baseData = [];
-            //     Object.keys(data).filter(tech=>(
-            //         techArr.includes(tech)
-            //     )).map(tech=>(
-            //         baseData= [...baseData, ...data[tech]]
-            //     ))
-
-            //     setRows([...baseData.map((eachRow, index)=>{
-            //         return {
-            //             id:index,
-            //             title:eachRow.question,
-            //             level:1,
-            //             technology:'Python'
-            //         }
-            //     })]);
-
-            // })
-            // .catch(console.log)
         }
         
     }
@@ -152,7 +113,6 @@ const PredefinedQuestions = ({formSectionKey}) => {
                 fieldClass="w-[500px]"
             />
 
-
             <div className='flex justify-between items-center '>
 
                 <Field
@@ -165,8 +125,6 @@ const PredefinedQuestions = ({formSectionKey}) => {
                     fieldClass="w-[400px] z-10"
 
                 />
-
-
 
                 <Field
                     control="selectlib"
@@ -199,7 +157,6 @@ const PredefinedQuestions = ({formSectionKey}) => {
                 
             </div>
 
-
             <div className='h-[400px] my-5'>
                 <DataGrid
                     rows={rows}
@@ -211,10 +168,15 @@ const PredefinedQuestions = ({formSectionKey}) => {
                     }}
                     pageSizeOptions={[5, 10]}
                     checkboxSelection
+                    onChange={console.log}
+                    onCellClick={(value)=>console.log(value)}
+                    on
                 />
             </div>
                 
-
+            {
+                console.log(DataGrid)
+            }
             {
                 (showAddNewForm) && 
 

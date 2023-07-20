@@ -2,7 +2,6 @@ import Label from '../Label/Label';
 import FormContext from '../../context/FormContext';
 import React, { memo, useContext, useState } from 'react'
 import { toast } from 'react-toastify';
-import './Input.css';
 
 
 const Input = ({fieldLabel, fieldType, fieldPlaceHolder, fieldPattern, fieldErrorMsg, fieldName, fieldValue, fieldClass, onChange, stateSetter=null, allowDebounce=false}) => {
@@ -84,7 +83,7 @@ const Input = ({fieldLabel, fieldType, fieldPlaceHolder, fieldPattern, fieldErro
         }
         
         {
-            <input className='inputField w-[100%]' id={fieldName} type={fieldType} placeholder={fieldPlaceHolder} value={allowDebounce ? undefined : value} onChange={ onChange ?? allowDebounce ? debouncedInputData : handleInputChange } />
+            <input className='w-[100%] border p-2 rounded mb-2' id={fieldName} type={fieldType} placeholder={fieldPlaceHolder} value={allowDebounce ? undefined : value} onChange={ onChange ?? allowDebounce ? debouncedInputData : handleInputChange } />
         }
 
 

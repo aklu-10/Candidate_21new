@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import Label from '../Label/Label'
 import FormContext from '../../context/FormContext';
 
-const Radio = ({fieldLabel, fieldOptions, fieldClass, fieldName, onChange}) => {
+const Radio = ({fieldLabel, fieldOptions, fieldClass, fieldName, fieldChecked, fieldDisabled, onChange}) => {
 
     const {masterData, setMasterData} = useContext(FormContext);
 
@@ -28,9 +28,23 @@ const Radio = ({fieldLabel, fieldOptions, fieldClass, fieldName, onChange}) => {
             <div className='flex'>
             {
                 fieldOptions.map((option, index)=>(
+                    
+                    (option.value === fieldChecked?.value)
+                    ?
+
                     <div className='flex items-center mr-[20px]' key={index}>
 
-                        <input type='radio' value={option.value} name={fieldName} onChange={onChange ?? handleRadioChange}/>
+                        <input type='radio' value={option.value} name={fieldName} checked disabled={fieldDisabled} onChange={onChange ?? handleRadioChange}/>
+                        
+                        <Label labelName={option.label}/>
+
+                    </div>
+
+                    : 
+
+                    <div className='flex items-center mr-[20px]' key={index}>
+
+                        <input type='radio' value={option.value} name={fieldName} disabled={fieldDisabled} onChange={onChange ?? handleRadioChange}/>
                         
                         <Label labelName={option.label}/>
 

@@ -3,15 +3,15 @@ export const candidateTestSectionBaseData = {
     testType:'',
     managedBy:
     {
-        name:'Candidate',
+        name:'Agent',
         _isMcq:true,
-        _isDisabled:false
+        _isDisabled:true
     },
     screeningType:'',
-    totalQuestions:'0',
+    totalQuestions:'',
     randomQuestions:
     {
-        totalQuestions:0,
+        totalQuestions:'',
         totalMcq:0,
         totalProgramming:0,
         totalDescriptive:0,

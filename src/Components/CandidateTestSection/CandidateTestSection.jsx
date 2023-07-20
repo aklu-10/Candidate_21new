@@ -39,7 +39,7 @@ const CandidateTestSection = ({formSectionKey}) => {
                 fieldClass="w-[500px]"
                 />
 
-                <span className="text-green-600/100 text-xl mt-[25px] ml-[20px] cursor-pointer" onClick={handleAddNewFormSection}>&#8853;</span>
+                <span className="text-green-600/100 text-xl mt-[28px] ml-[20px] cursor-pointer" onClick={handleAddNewFormSection}>&#8853;</span>
             </div>
 
             <Field
@@ -59,15 +59,49 @@ const CandidateTestSection = ({formSectionKey}) => {
                 fieldLabel="Managed By"
                 fieldOptions={["Agent", "Candidate"]}
                 fieldClass="w-[500px]"
+                onClick={(e)=>{
+
+                    let keys = `${formSectionKey}.managedBy.name`.split(".");
+
+                    if(e.target.value==="Agent")
+                    {
+                        setMasterData((prev)=>({...prev, forms: {...prev.forms, [keys[0]]: { ...prev.forms[keys[0]], [keys[1]]: { ...prev.forms[keys[0]][keys[1]], [keys[2]]: e.target.value , _isMcq: true, _isDisabled:true }}}}))
+                    }
+                    else{
+
+                        setMasterData((prev)=>({...prev, forms: {...prev.forms, [keys[0]]: { ...prev.forms[keys[0]], [keys[1]]: { ...prev.forms[keys[0]][keys[1]], [keys[2]]: e.target.value , _isMcq: false, _isDisabled:false }}}}))
+                    }
+                }}
                 />
 
-                <Field
-                control="radio"
-                fieldName={`${formSectionKey}.managedBy._isMcq`}
-                fieldLabel="isMcq"
-                fieldOptions={[{label:"Yes", value:true}, {label:"No", value:false}]}
-                fieldClass="w-[250px] mx-5"
-                />
+                {
+                    (masterData.forms[formSectionKey].managedBy.name === "Agent")
+                    ?
+
+                    <Field
+                    control="radio"
+                    fieldName={`${formSectionKey}.managedBy._isMcq`}
+                    fieldLabel="isMcq"
+                    fieldOptions={[{label:"Yes", value:true}, {label:"No", value:false}]}
+                    fieldClass="w-[250px] mx-5"
+                    fieldChecked={{value:masterData.forms[formSectionKey].managedBy._isMcq}}
+                    fieldDisabled={masterData.forms[formSectionKey].managedBy._isDisabled}
+                    />
+                    
+                    :
+
+
+                    <Field
+                    control="radio"
+                    fieldName={`${formSectionKey}.managedBy._isMcq`}
+                    fieldLabel="isMcq"
+                    fieldOptions={[{label:"Yes", value:true}, {label:"No", value:false}]}
+                    fieldClass="w-[250px] mx-5"
+                    fieldChecked={{value:masterData.forms[formSectionKey].managedBy._isMcq}}
+                    />
+                    
+                    
+                }
             </div>
 
             <Field

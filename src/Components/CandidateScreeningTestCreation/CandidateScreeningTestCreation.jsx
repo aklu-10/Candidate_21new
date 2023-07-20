@@ -17,7 +17,7 @@ const CandidateScreeningTestCreation = () => {
             forms:{
                 ["form"+formIndex.current]:{...candidateTestSectionBaseData},
             },
-            _isValid:false
+            _isValid:true
     });
 
     
@@ -25,7 +25,9 @@ const CandidateScreeningTestCreation = () => {
     function handleSubmit(e)
     {
         e.preventDefault();
-        console.log(masterData)
+        console.log(1)
+        if(masterData._isValid)
+            console.log(masterData)
     }
 
     return (
@@ -56,12 +58,12 @@ const CandidateScreeningTestCreation = () => {
                     <div>
                         <Button
                             btnClass={
-                                !masterData._isValid
+                                masterData._isValid
                                 ? "rounded bg-blue-600 text-white p-2 mr-[20px]"
                                 : "rounded bg-gray-600 text-white p-2 mr-[20px]"
                             }
                             isBtnDisabled={masterData._isValid}
-                            btnType="submit"
+                            onClick={handleSubmit}
                         >
                         Submit Candidate Test
                         </Button>
@@ -70,7 +72,6 @@ const CandidateScreeningTestCreation = () => {
                             btnClass={"rounded bg-gray-600 text-white p-2"}
                             isBtnDisabled={masterData._isValid}
                             btnType="button"
-                            onClick={handleSubmit}
                         >
                             Final Submit
                         </Button>
