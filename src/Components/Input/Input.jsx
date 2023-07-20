@@ -14,7 +14,6 @@ const Input = ({fieldLabel, fieldType, fieldPlaceHolder, fieldPattern, fieldErro
     const [value, setValue] = useState(fieldValue);
     const {masterData, setMasterData} = useContext(FormContext);
 
-
     // handle input change function
     function handleInputChange(e)
     {

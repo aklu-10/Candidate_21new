@@ -44,7 +44,7 @@ const CandidateScreeningTestCreation = () => {
             />
 
             <FormContext.Provider value={{masterData, setMasterData, formIndex}}>
-                <form onSubmit={handleSubmit}>
+                <div>
                     
                     {
                         Object.keys(masterData.forms).map((formSectionKey, index)=>(
@@ -70,12 +70,13 @@ const CandidateScreeningTestCreation = () => {
                             btnClass={"rounded bg-gray-600 text-white p-2"}
                             isBtnDisabled={masterData._isValid}
                             btnType="button"
+                            onClick={handleSubmit}
                         >
                             Final Submit
                         </Button>
                     </div>
 
-                </form>
+                </div>
             </FormContext.Provider>
         </>
 

@@ -3,10 +3,9 @@ import CreatableSelect from 'react-select/creatable';
 import Label from '../Label/Label';
 import FormContext from '../../context/FormContext';
 
-const SelectLib = ({multiSelect="true", fieldLabel, fieldPlaceHolder, fieldOptions, fieldName, fieldClass}) => {
+const SelectLib = ({multiSelect="true", fieldLabel, fieldPlaceHolder, fieldOptions, fieldName, fieldClass, innerRef=null}) => {
 
     const {setMasterData} = useContext(FormContext);
-
 
     function handleSelectChange(option)
     {
@@ -30,6 +29,7 @@ const SelectLib = ({multiSelect="true", fieldLabel, fieldPlaceHolder, fieldOptio
 
     function handleMultiSelectChange(option)
     {
+
         let keys = fieldName.split(".");
         setMasterData((prev)=>({...prev, forms: {...prev.forms, [keys[0]]: { ...prev.forms[keys[0]], [keys[1]]: { ...prev.forms[keys[0]][keys[1]], [keys[2]]: [ ...option ]}}}}))
     }
@@ -44,8 +44,8 @@ const SelectLib = ({multiSelect="true", fieldLabel, fieldPlaceHolder, fieldOptio
             (multiSelect === "true")
             
             ?
-
-            <CreatableSelect isMulti options={fieldOptions} placeholder={fieldPlaceHolder} onChange={handleMultiSelectChange}/>
+                <CreatableSelect ref={innerRef}
+                isMulti options={fieldOptions} placeholder={fieldPlaceHolder} onChange={handleMultiSelectChange}/>
             
             :
 

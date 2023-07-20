@@ -1,13 +1,16 @@
+import FormContext from '../../context/FormContext';
 import Button from '../Button/Button';
 import PredefinedQuestions from '../PredefinedQuestions/PredefinedQuestions';
 import RandomQuestions from '../RandomQuestions/RandomQuestions';
-import React, { useRef, useState } from 'react'
+import { useContext } from 'react';
+import React, { useEffect, useRef, useState } from 'react'
 
-const TabSwitch = ({totalQuestions, tabs}) => {
+const TabSwitch = ({formSectionData, tabs}) => {
 
-    if(!totalQuestions || totalQuestions <= 0 ) return;
-
+    const {masterData, setMasterData} = useContext(FormContext);
     const [currentTab, setCurrentTab] = useState(tabs[0]);
+
+    if(!formSectionData.totalQuestions || formSectionData.totalQuestions <= 0 ) return;
 
   return (
 

@@ -90,14 +90,13 @@ const CandidateTestSection = ({formSectionKey}) => {
             />
 
             <TabSwitch
-                totalQuestions={masterData.forms[formSectionKey].totalQuestions}
+                formSectionData={masterData.forms[formSectionKey]}
                 tabs={[
                 { label: "Random Questions", value: <RandomQuestions formSectionKey={formSectionKey} /> },
                 { label: "Predefined Questions", value: <PredefinedQuestions formSectionKey={formSectionKey}/> },
                 ]}
             />
 
-          
         </div>
     );
 };

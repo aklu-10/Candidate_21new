@@ -3,8 +3,10 @@ import Field from '../Field/Field';
 import Label from '../Label/Label';
 import Button from '../Button/Button';
 import { toast } from 'react-toastify';
+import AddNewQuestionOptions from '../AddNewQuestionOptions/AddNewQuestionOptions';
+import axios from 'axios';
 
-const AddNewQuestion = ({setShowAddNewForm}) => {
+const AddNewQuestion = ({setShowAddNewForm, testTypeOptions}) => {
 
     const [addNewQuestionData, setAddNewQuestionState] = useState({
         technology:'',
@@ -29,9 +31,38 @@ const AddNewQuestion = ({setShowAddNewForm}) => {
 
     function addNewQuestionOnBoard()
     {   
+        
+        if(!addNewQuestionData.technology || !addNewQuestionData.questionType || !addNewQuestionData.questionTitle)
+        {
+            toast.error("Please provide the required fields")
+            return;
+        }
+        else if(!Object.keys(addNewQuestionData.options).filter(option=>addNewQuestionData.options[option].isCorrect).length)
+        {
+            toast.error("Please provide the required fields")
+            return;
+        }
 
-        console.log(addNewQuestionData);
+        toast.success("Question successfully created");
         setShowAddNewForm(false)
+        console.log(addNewQuestionData);
+
+        let tech = addNewQuestionData.technology;
+
+        let correctAns = Object.keys(addNewQuestionData.options).filter(option=>(
+            addNewQuestionData.options[option]._isCorrect=true
+        ))
+
+        let base = {
+            question: addNewQuestionData.questionTitle,
+            option: addNewQuestionData.options,
+            correct_answer: correctAns[0]
+            }
+
+        axios.post("http://localhost:3000/"+tech, base)
+        .then(console.log)
+        .catch(console.log)
+            
     }
 
     function saveAndNewQuestionOnBoard()
@@ -66,31 +97,6 @@ const AddNewQuestion = ({setShowAddNewForm}) => {
         
     }
 
-    function handleDeleteOption(key)
-    {
-        if(key)
-        {
-            let copyObj = {...addNewQuestionData.options}
-            delete copyObj[key];
-            console.log(copyObj)
-            setAddNewQuestionState({...addNewQuestionData, options: {...copyObj}})
-        }
-    }
-
-    function handleCorrectOption(correctOption)
-    {
-
-        let copyOptionData = {...addNewQuestionData.options};
-
-        Object.keys(copyOptionData).map(option=>{
-            (option===correctOption) 
-            ? copyOptionData[option].isCorrect=true
-            : copyOptionData[option].isCorrect=false
-        })
-
-        setAddNewQuestionState({...addNewQuestionData, options: {...copyOptionData}})
-    }
-
     return (
 
         <>
@@ -102,7 +108,7 @@ const AddNewQuestion = ({setShowAddNewForm}) => {
                     control="select"
                     fieldName="technology"
                     fieldLabel="Technology"
-                    fieldOptions={["Agent", "Candidate"]}
+                    fieldOptions={testTypeOptions}
                     fieldClass="w-[500px]"
                     onClick={(e)=>handleAddNewInput("technology", e)}
                 />
@@ -139,38 +145,7 @@ const AddNewQuestion = ({setShowAddNewForm}) => {
 
                         {
                         
-                            Object.keys(addNewQuestionData.options).map((option, index)=>(
-                                <div key={index} className='flex items-center justify-between'>
-                                    {console.log(option)}
-                                    <Field
-                                        control="input"
-                                        fieldName={option}
-                                        fieldType="text"
-                                        fieldValue={addNewQuestionData.options[option].value}
-                                        fieldLabel={"Answer Option (" + (index+1) + ")"}
-                                        fieldPlaceHolder="Answer Option"
-                                        fieldClass="w-[200px]"
-                                        stateSetter={setAddNewQuestionState}
-                                    />
-
-                                    <div className='flex items-center'>
-
-                                        <Field  
-                                            control="radio"
-                                            fieldName="correctoption"
-                                            fieldLabel="is Correct"
-                                            fieldOptions={[option]}
-                                            fieldClass="w-[200px]"
-                                            onChange={()=>handleCorrectOption(option)}
-                                        />
-
-                                        <button type='button' className='ml-5 bg-red-400 w-[25px] h-[25px] rounded-xl text-white px-2' onClick={()=>handleDeleteOption(option)}>-</button>
-
-                                    </div>
-
-                                </div>
-                            ))
-
+                            <AddNewQuestionOptions addNewQuestionData={addNewQuestionData} setAddNewQuestionState={setAddNewQuestionState}/>
                         }
 
                     </div>

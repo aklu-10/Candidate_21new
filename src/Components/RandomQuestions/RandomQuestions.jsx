@@ -1,12 +1,17 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import Field from '../Field/Field'
-import SelectLib from '../SelectLib/SelectLib'
+import { memo } from 'react'
+import FormContext from '../../context/FormContext'
 
 const RandomQuestions = ({formSectionKey}) => {
 
-    let testTypeOptions = [
-        { label: 'coding', value: 'coding' },
-        { label: 'screening', value: 'screening' }
+    const {masterData, setMasterData} = useContext(FormContext);
+
+    // console.log(masterData.forms[formSectionKey].randomQuestions.totalQuestions)
+
+    let testTypeOptions2 = [
+        { label: 'Python', value: 'Python' },
+        { label: 'java', value: 'java' }
     ]
 
     return (
@@ -15,22 +20,30 @@ const RandomQuestions = ({formSectionKey}) => {
             <Field
                 control="input"
                 fieldName={`${formSectionKey}.randomQuestions.totalQuestions`}
+                fieldValue={`${masterData.forms[formSectionKey].randomQuestions.totalQuestions}`}
                 fieldType="text"
                 fieldLabel="Random Questions"
                 fieldErrorMsg="Value must be an positive number"
                 fieldPattern="^[0-9]\d*"
                 fieldClass="w-[500px]"
                 fieldPlaceHolder="Random Questions"
-                allowDebounce={true}
+                // allowDebounce={true}
             />
 
-            <Field
-                control="select"
-                fieldName={`${formSectionKey}.randomQuestions.technology`}
-                fieldLabel="Technology"
-                fieldOptions={testTypeOptions}
-                fieldClass="w-[500px]"
-            />
+            <div className='flex items-center'>
+
+                <Field
+                    control="select"
+                    fieldName={`${formSectionKey}.randomQuestions.technology`}
+                    fieldLabel="Technology"
+                    fieldOptions={testTypeOptions2}
+                    fieldClass="w-[500px]"
+                />
+
+                <span className="text-green-600/100 text-xl mt-[40px] ml-[20px] cursor-pointer">&#8853;</span>
+
+            </div>
+
             
             <div className="flex flex-wrap justify-between">
                 <Field
@@ -69,4 +82,4 @@ const RandomQuestions = ({formSectionKey}) => {
     )
 }
 
-export default RandomQuestions
+export default memo(RandomQuestions)

@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react'
+import React, { memo, useRef, useState } from 'react'
 import Field from '../Field/Field'
 import FormContext from '../../context/FormContext';
 import Button from '../Button/Button';
@@ -40,6 +40,9 @@ const PredefinedQuestions = ({formSectionKey}) => {
 
     const [showAddNewForm, setShowAddNewForm] = useState(false);
 
+    let techSelectRef = useRef(null);
+    let quesTypeSelectRef = useRef(null);
+
     //table rows
     const [rows, setRows] = useState([]);
 
@@ -47,6 +50,12 @@ const PredefinedQuestions = ({formSectionKey}) => {
         { label: 'Python', value: 'Python' },
         { label: 'java', value: 'java' },
         { label: 'php', value: 'php' }
+    ]
+
+    let testTypeOptions2 = [
+        { label: 'mcq', value: 'mcq' },
+        { label: 'programming', value: 'programming' },
+        { label: 'descriptive', value: 'descriptive' }
     ]
 
     // function handleInputChange(e)
@@ -66,29 +75,62 @@ const PredefinedQuestions = ({formSectionKey}) => {
             toast.error("Please provide required technology or question type")
         else
         {
-            axios.get("http://localhost:3000/techs")
-            .then(({data})=>{
-                
-                let baseData = [];
-                Object.keys(data).filter(tech=>(
-                    techArr.includes(tech)
-                )).map(tech=>(
-                    baseData= [...baseData, ...data[tech]]
+            let apiArr = [];
+
+            techArr.map(tech=>(
+                apiArr.push(axios.get("http://localhost:3000/"+tech))
+            ))
+
+            Promise.all(apiArr)
+            .then((res)=>{
+                let result = [];
+                res.map(({data})=>(
+                    result = [...result, ...data]
                 ))
 
-                setRows([...baseData.map((eachRow, index)=>{
-                    return {
-                        id:index,
-                        title:eachRow.question,
-                        level:1,
-                        technology:'Python'
-                    }
-                })]);
-
+                setRows(result.map((question, index)=>(
+                        
+                        {
+                            id:index,
+                            title:question.question,
+                            level:1,
+                            technology:'Technology'
+                        }
+                    )))
             })
             .catch(console.log)
+
+
+            // axios.get("http://localhost:3000/allQuestions")
+            // .then(({data})=>
+            // {
+            //     let baseData = [];
+            //     Object.keys(data).filter(tech=>(
+            //         techArr.includes(tech)
+            //     )).map(tech=>(
+            //         baseData= [...baseData, ...data[tech]]
+            //     ))
+
+            //     setRows([...baseData.map((eachRow, index)=>{
+            //         return {
+            //             id:index,
+            //             title:eachRow.question,
+            //             level:1,
+            //             technology:'Python'
+            //         }
+            //     })]);
+
+            // })
+            // .catch(console.log)
         }
         
+    }
+
+    function handleClearFields()
+    {
+        techSelectRef.current.clearValue()
+        quesTypeSelectRef.current.clearValue()
+        setRows([]);
     }
 
     function handleAddNewForm()
@@ -103,6 +145,7 @@ const PredefinedQuestions = ({formSectionKey}) => {
                 control="input"
                 fieldName={`${formSectionKey}.predefinedQuestions.totalQuestions`}
                 fieldType="number"
+                fieldValue={`${masterData.forms[formSectionKey].predefinedQuestions.totalQuestions}`}
                 fieldLabel="Total No. of Predefined Question"
                 fieldPlaceHolder="Predefined Question"
                 fieldErrorMsg="Error Message"
@@ -114,6 +157,7 @@ const PredefinedQuestions = ({formSectionKey}) => {
 
                 <Field
                     control="selectlib"
+                    innerRef={techSelectRef}
                     fieldName={`${formSectionKey}.predefinedQuestions.technology`}
                     fieldLabel="Technology"
                     fieldPlaceHolder="Technology"
@@ -127,10 +171,11 @@ const PredefinedQuestions = ({formSectionKey}) => {
                 <Field
                     control="selectlib"
                     fieldName={`${formSectionKey}.predefinedQuestions.questionType`}
+                    innerRef={quesTypeSelectRef}
                     fieldLabel="Question Type"
                     fieldPlaceHolder="Question Type"
-                    fieldOptions={testTypeOptions}
-                    fieldClass="w-[400px]"
+                    fieldOptions={testTypeOptions2}
+                    fieldClass="w-[400px] z-[10]"
                 />
                 
                 <Button
@@ -141,6 +186,7 @@ const PredefinedQuestions = ({formSectionKey}) => {
                 </Button>
                 <Button
                     btnClass='rounded bg-blue-600 w-[80px] text-white p-2 mr-[2px] mt-[35px]'
+                    onClick={handleClearFields}
                 >
                     Clear
                 </Button>
@@ -172,7 +218,7 @@ const PredefinedQuestions = ({formSectionKey}) => {
             {
                 (showAddNewForm) && 
 
-                <AddNewQuestion setShowAddNewForm={setShowAddNewForm}/>
+                <AddNewQuestion setShowAddNewForm={setShowAddNewForm} testTypeOptions={testTypeOptions}/>
                 
             }
 
