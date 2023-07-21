@@ -7,7 +7,7 @@ export const candidateTestSectionBaseData = {
         _isMcq:true,
         _isDisabled:true
     },
-    screeningType:'',
+    screeningType:'Pre Interview',
     totalQuestions:'',
     randomQuestions:
     {
@@ -15,7 +15,7 @@ export const candidateTestSectionBaseData = {
         totalMcq:0,
         totalProgramming:0,
         totalDescriptive:0,
-        technology:[],
+        technology:{ technology1 : { } },
         questions:[]
     },
     predefinedQuestions:
@@ -27,6 +27,7 @@ export const candidateTestSectionBaseData = {
             { label: 'java', value: 'java' },
             { label: 'php', value: 'php' }
         ],
-        questionType:[]
+        questionType:[],
+        selectedQuestion:[]
     },
 }

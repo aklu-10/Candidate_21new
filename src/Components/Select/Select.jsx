@@ -37,7 +37,7 @@ const Select = ({fieldName, fieldLabel, fieldOptions, fieldClass, onClick}) => {
                 fieldOptions.map((option, index)=>(
 
                     (typeof option === 'object')
-                    ? <option key={index} value={option.value}>{option.value}</option>
+                    ? <option key={index} value={option.value}>{option.label}</option>
                     : <option key={index} value={option}>{option}</option>
 
                 ))

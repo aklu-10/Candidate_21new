@@ -2,6 +2,8 @@ import React, { useContext } from 'react'
 import Field from '../Field/Field'
 import { memo } from 'react'
 import FormContext from '../../context/FormContext'
+import TechnologyFieldRandomQuestion from '../TechnologyFieldRandomQuestion/TechnologyFieldRandomQuestion'
+import { toast } from 'react-toastify'
 
 const RandomQuestions = ({formSectionKey}) => {
 
@@ -9,10 +11,7 @@ const RandomQuestions = ({formSectionKey}) => {
 
     // console.log(masterData.forms[formSectionKey].randomQuestions.totalQuestions)
 
-    let testTypeOptions2 = [
-        { label: 'Python', value: 'Python' },
-        { label: 'java', value: 'java' }
-    ]
+
 
     return (
 
@@ -20,7 +19,7 @@ const RandomQuestions = ({formSectionKey}) => {
             <Field
                 control="input"
                 fieldName={`${formSectionKey}.randomQuestions.totalQuestions`}
-                fieldValue={`${masterData.forms[formSectionKey].randomQuestions.totalQuestions}`}
+                fieldValue={masterData.forms[formSectionKey].randomQuestions.totalQuestions}
                 fieldType="text"
                 fieldLabel="Random Questions"
                 fieldErrorMsg="Value must be an positive number"
@@ -30,53 +29,17 @@ const RandomQuestions = ({formSectionKey}) => {
                 // allowDebounce={true}
             />
 
-            <div className='flex items-center'>
+            {
+                masterData.forms[formSectionKey].randomQuestions.totalQuestions &&
 
-                <Field
-                    control="select"
-                    fieldName={`${formSectionKey}.randomQuestions.technology`}
-                    fieldLabel="Technology"
-                    fieldOptions={testTypeOptions2}
-                    fieldClass="w-[500px]"
-                />
+                Number(masterData.forms[formSectionKey].randomQuestions.totalQuestions) > 0 && 
 
-                <span className="text-green-600/100 text-xl mt-[40px] ml-[20px] cursor-pointer">&#8853;</span>
+                Number(masterData.forms[formSectionKey].randomQuestions.totalQuestions) <= Number(masterData.forms[formSectionKey].totalQuestions) &&
 
-            </div>
+                <TechnologyFieldRandomQuestion formSectionKey={formSectionKey}/>
+            }
 
-            
-            <div className="flex flex-wrap justify-between">
-                <Field
-                    control="input"
-                    fieldName={`${formSectionKey}.randomQuestions.totalDescriptive`}
-                    fieldType="number"
-                    fieldLabel="No. of descreptive Questions"
-                    fieldErrorMsg="No. Of Descreptive Questions"
-                    fieldPattern="^[0-9]\d*"
-                    fieldClass="w-[350px]"
-                    fieldPlaceHolder="Descreptive Questions"
-                />
-                <Field
-                    control="input"
-                    fieldName={`${formSectionKey}.randomQuestions.totalProgramming`}
-                    fieldType="number"
-                    fieldLabel="No. Of Programming Questions"
-                    fieldErrorMsg="No. Of Programming Questions"
-                    fieldPattern="^[0-9]\d*"
-                    fieldClass="w-[350px]"
-                    fieldPlaceHolder="Proframming Questions"
-                />
-                <Field
-                    control="input"
-                    fieldName={`${formSectionKey}.randomQuestions.totalMcq`}
-                    fieldType="number"
-                    fieldLabel="No. Of MCQ Questions"
-                    fieldErrorMsg="No. Of MCQ Questions"
-                    fieldPattern="^[0-9]\d*"
-                    fieldClass="w-[350px]"
-                    fieldPlaceHolder="Random Questions"
-                />
-            </div>
+
         </div>
 
     )

@@ -17,11 +17,17 @@ const Input = ({fieldLabel, fieldType, fieldPlaceHolder, fieldPattern, fieldErro
     function handleInputChange(e)
     {
         // if(fieldName.includes("random"))
+        let keys = fieldName.split(".");
 
         if(fieldName.includes("randomQuestions.totalQuestions") || fieldName.includes("predefinedQuestions.totalQuestions"))
         {
             if(Number(e.target.value) > Number(masterData.forms[fieldName.split(".")[0]].totalQuestions))
                 toast.error("Value exceeds")
+
+            if(Number(e.target.value) ===  Number(masterData.forms[keys[0]].totalQuestions)){
+                setMasterData((prev)=>({...prev, forms: { ...prev.forms, [keys[0]] : { ...prev.forms[keys[0]], predefinedQuestions: { ...prev.forms[keys[0]].predefinedQuestions, totalQuestions:"0" }}}}))
+            }
+    
         }
 
         setValue(e.target.value)
@@ -32,8 +38,6 @@ const Input = ({fieldLabel, fieldType, fieldPlaceHolder, fieldPattern, fieldErro
         }
         else
         {
-
-            let keys = fieldName.split(".");
 
             if(keys.length===2)
                 setMasterData((prev)=>({...prev, forms: { ...prev.forms, [keys[0]] : { ...prev.forms[keys[0]], [keys[1]]: e.target.value }}}));

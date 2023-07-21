@@ -32,6 +32,7 @@ const CandidateTestSection = ({formSectionKey}) => {
                 <Field
                 control="input"
                 fieldName={`${formSectionKey}.testName`}
+                fieldValue={masterData.forms[formSectionKey].testName}
                 fieldType="text"
                 fieldLabel="Test Name"
                 fieldPlaceHolder="Type test name"
@@ -108,7 +109,7 @@ const CandidateTestSection = ({formSectionKey}) => {
                 control="select"
                 fieldName={`${formSectionKey}.screeningType`}
                 fieldLabel="Screening Type"
-                fieldOptions={["Pre Interview", "Post Interview"]}
+                fieldOptions={[{label:"Pre Interview", value:0}, {label:"Post Interview", value:1}]}
                 fieldClass="w-[500px]"
             />
 
@@ -123,11 +124,12 @@ const CandidateTestSection = ({formSectionKey}) => {
                 allowDebounce={true}
             />
 
+
             <TabSwitch
                 formSectionData={masterData.forms[formSectionKey]}
                 tabs={[
-                { label: "Random Questions", value: <RandomQuestions formSectionKey={formSectionKey} /> },
-                { label: "Predefined Questions", value: <PredefinedQuestions formSectionKey={formSectionKey}/> },
+                { label: "Random Questions", value: <RandomQuestions formSectionKey={formSectionKey}  /> },
+                { label: "Predefined Questions", value: <PredefinedQuestions formSectionKey={formSectionKey} /> },
                 ]}
             />
 

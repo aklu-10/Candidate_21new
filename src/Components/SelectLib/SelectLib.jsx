@@ -3,7 +3,7 @@ import CreatableSelect from 'react-select/creatable';
 import Label from '../Label/Label';
 import FormContext from '../../context/FormContext';
 
-const SelectLib = ({multiSelect="true", fieldLabel, fieldPlaceHolder, fieldOptions, fieldName, fieldClass, innerRef=null}) => {
+const SelectLib = ({fieldValue, fieldLabel, fieldPlaceHolder, fieldOptions, fieldName, fieldClass, innerRef=null,multiSelect="true"}) => {
 
     const {setMasterData} = useContext(FormContext);
 

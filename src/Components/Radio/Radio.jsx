@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import Label from '../Label/Label'
 import FormContext from '../../context/FormContext';
 
@@ -6,9 +6,14 @@ const Radio = ({fieldLabel, fieldOptions, fieldClass, fieldName, fieldChecked, f
 
     const {masterData, setMasterData} = useContext(FormContext);
 
+    const [value, setValue] = useState(fieldChecked);
+
+    console.log(onChange)
 
     function handleRadioChange(e)
     {   
+        console.log("asd")
+
         let keys = fieldName.split(".");
 
         if(keys.length===2)
@@ -29,12 +34,15 @@ const Radio = ({fieldLabel, fieldOptions, fieldClass, fieldName, fieldChecked, f
             {
                 fieldOptions.map((option, index)=>(
                     
+                    fieldChecked ? 
+                    
                     (option.value === fieldChecked?.value)
+                    
                     ?
 
                     <div className='flex items-center mr-[20px]' key={index}>
 
-                        <input type='radio' value={option.value} name={fieldName} checked disabled={fieldDisabled} onChange={onChange ?? handleRadioChange}/>
+                        <input type='radio' value={option?.value} name={fieldName} checked disabled={fieldDisabled} onChange={onChange ?? handleRadioChange}/>
                         
                         <Label labelName={option.label}/>
 
@@ -44,7 +52,14 @@ const Radio = ({fieldLabel, fieldOptions, fieldClass, fieldName, fieldChecked, f
 
                     <div className='flex items-center mr-[20px]' key={index}>
 
-                        <input type='radio' value={option.value} name={fieldName} disabled={fieldDisabled} onChange={onChange ?? handleRadioChange}/>
+                        <input type='radio' value={option?.value} name={fieldName} disabled={fieldDisabled} onChange={onChange ?? handleRadioChange} />
+                        
+                        <Label labelName={option.label}/>
+
+                    </div> :
+                    <div className='flex items-center mr-[20px]' key={index}>
+
+                        <input type='radio' value={option?.value} name={fieldName} disabled={fieldDisabled} onChange={onChange ?? handleRadioChange} />
                         
                         <Label labelName={option.label}/>
 

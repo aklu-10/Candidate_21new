@@ -1,29 +1,26 @@
-import React, { memo, useRef, useState } from 'react'
-import Field from '../Field/Field'
-import FormContext from '../../context/FormContext';
-import Button from '../Button/Button';
-import { DataGrid } from '@mui/x-data-grid';
-import { useContext } from 'react';
-import AddNewQuestion from '../AddNewQuestion/AddNewQuestion';
-import { toast } from 'react-toastify';
-import axios from 'axios';
+    import React, { memo, useRef, useState } from "react";
+    import Field from "../Field/Field";
+    import FormContext from "../../context/FormContext";
+    import Button from "../Button/Button";
+    import { DataGrid } from "@mui/x-data-grid";
+    import { useContext } from "react";
+    import AddNewQuestion from "../AddNewQuestion/AddNewQuestion";
+    import { toast } from "react-toastify";
+    import axios, { all } from "axios";
 
-
-const columns = [
-    { field: 'title', headerName: 'Question Title', width: 400 },
-    { field: 'level', headerName: 'Question Level', width: 200 },
-    { field: 'technology', headerName: 'Technology', width: 200 },
+    const columns = [
+    { field: "title", headerName: "Question Title", width: 400 },
+    { field: "level", headerName: "Question Level", width: 200 },
+    { field: "technology", headerName: "Technology", width: 200 },
     {
-    field: 'questionType',
-    headerName: 'Question Type',
-    width: 350,
+        field: "questionType",
+        headerName: "Question Type",
+        width: 350,
     },
-];
+    ];
 
-
-const PredefinedQuestions = ({formSectionKey}) => {
-
-    const {masterData, setMasterData} = useContext(FormContext);
+    const PredefinedQuestions = ({ formSectionKey }) => {
+    const { masterData, setMasterData } = useContext(FormContext);
 
     const [showAddNewForm, setShowAddNewForm] = useState(false);
 
@@ -34,158 +31,200 @@ const PredefinedQuestions = ({formSectionKey}) => {
     const [rows, setRows] = useState([]);
 
     let testTypeOptions = [
-        { label: 'Python', value: 'Python' },
-        { label: 'java', value: 'java' },
-        { label: 'php', value: 'php' }
-    ]
+        { label: "Python", value: "Python" },
+        { label: "java", value: "java" },
+        { label: "php", value: "php" },
+    ];
 
     let testTypeOptions2 = [
-        { label: 'mcq', value: 'mcq' },
-        { label: 'programming', value: 'programming' },
-        { label: 'descriptive', value: 'descriptive' }
-    ]
+        { label: "mcq", value: "mcq" },
+        { label: "programming", value: "programming" },
+        { label: "descriptive", value: "descriptive" },
+    ];
 
-    function fetchTechQueryBaseData()
-    {
-        let techArr = masterData.forms[formSectionKey].predefinedQuestions.technology.map(tech=>tech.value);
-        
-        let quesArr = masterData.forms[formSectionKey].predefinedQuestions.questionType;
+    function fetchTechQueryBaseData() {
+        let techArr = masterData.forms[
+        formSectionKey
+        ].predefinedQuestions.technology.map((tech) => tech.value);
 
-        if(!techArr.length || !quesArr.length)
-            toast.error("Please provide required technology or question type")
-        else
-        {
-            let apiArr = [];
+        let quesArr =
+        masterData.forms[formSectionKey].predefinedQuestions.questionType;
 
-            techArr.map(tech=>(
-                apiArr.push(axios.get("http://localhost:3000/"+tech))
-            ))
+        if (!techArr.length || !quesArr.length)
+        toast.error("Please provide required technology or question type");
+        else {
+        let apiArr = [];
 
-            Promise.all(apiArr)
-            .then((res)=>{
+        techArr.map((tech) =>
+            apiArr.push(axios.get("http://localhost:3000/" + tech))
+        );
 
-                let result = [];
-                res.map(({data})=>(
-                    result = [...result, ...data]
-                ))
+        Promise.all(apiArr)
+            .then((res) => {
+            let result = [];
+            res.map(({ data }) => (result = [...result, ...data]));
 
-                let allData = result.map((question, index)=>(
-                        
-                        {
-                            id:index,
-                            title:question.question,
-                            level:1,
-                            technology:'Technology'
-                        }
-                    ))
-                
-                setRows(allData.reverse())
+            let allData = result.map((question, index) => ({
+                id: index,
+                title: question.question,
+                level: 1,
+                technology: "Technology",
+            }));
+
+            setRows(allData.reverse());
             })
-            .catch(console.log)
-
+            .catch(console.log);
         }
-        
     }
 
-    function handleClearFields()
-    {
-        techSelectRef.current.clearValue()
-        quesTypeSelectRef.current.clearValue()
+    function handleClearFields() {
+        techSelectRef.current.clearValue();
+        quesTypeSelectRef.current.clearValue();
         setRows([]);
     }
 
-    function handleAddNewForm()
+    function handleAddNewForm() {
+        setShowAddNewForm(true);
+    }
+
+    function setSelectedQuestion({ id }) {
+        let allSelectedVal =
+        masterData.forms[formSectionKey].predefinedQuestions.selectedQuestion;
+
+        if (allSelectedVal.includes(id)) {
+        allSelectedVal = [
+            ...masterData.forms[formSectionKey].predefinedQuestions
+            .selectedQuestion,
+        ];
+        let ind = allSelectedVal.indexOf(id);
+        allSelectedVal.splice(ind, 1);
+        setMasterData((prev) => ({
+            ...prev,
+            forms: {
+            ...prev.forms,
+            [formSectionKey]: {
+                ...prev.forms[formSectionKey],
+                predefinedQuestions: {
+                ...prev.forms[formSectionKey].predefinedQuestions,
+                selectedQuestion: allSelectedVal,
+                },
+            },
+            },
+        }));
+        } else {
+        setMasterData((prev) => ({
+            ...prev,
+            forms: {
+            ...prev.forms,
+            [formSectionKey]: {
+                ...prev.forms[formSectionKey],
+                predefinedQuestions: {
+                ...prev.forms[formSectionKey].predefinedQuestions,
+                selectedQuestion: [
+                    ...prev.forms[formSectionKey].predefinedQuestions
+                    .selectedQuestion,
+                    id,
+                ],
+                },
+            },
+            },
+        }));
+        }
+    }
+
+    function showError(msg)
     {
-        setShowAddNewForm(true)
+        toast.error(msg);
     }
 
     return (
-        <div className='relative'>
+        <div className="relative">
+        <Field
+            control="input"
+            fieldName={`${formSectionKey}.predefinedQuestions.totalQuestions`}
+            fieldType="number"
+            fieldValue={`${masterData.forms[formSectionKey].predefinedQuestions.totalQuestions}`}
+            fieldLabel="Total No. of Predefined Question"
+            fieldPlaceHolder="Predefined Question"
+            fieldErrorMsg="Error Message"
+            fieldClass="w-[500px]"
+        />
 
-            <Field
-                control="input"
-                fieldName={`${formSectionKey}.predefinedQuestions.totalQuestions`}
-                fieldType="number"
-                fieldValue={`${masterData.forms[formSectionKey].predefinedQuestions.totalQuestions}`}
-                fieldLabel="Total No. of Predefined Question"
-                fieldPlaceHolder="Predefined Question"
-                fieldErrorMsg="Error Message"
-                fieldClass="w-[500px]"
-            />
-
-            <div className='flex justify-between items-center '>
-
+        {
+            
+            masterData.forms[formSectionKey].predefinedQuestions.totalQuestions!='' && 
+            (Number(masterData.forms[formSectionKey].predefinedQuestions.totalQuestions) > 0) ?
+        (
+            <>
+            <div className="flex justify-between items-center ">
                 <Field
-                    control="selectlib"
-                    innerRef={techSelectRef}
-                    fieldName={`${formSectionKey}.predefinedQuestions.technology`}
-                    fieldLabel="Technology"
-                    fieldPlaceHolder="Technology"
-                    fieldOptions={testTypeOptions}
-                    fieldClass="w-[400px] z-10"
-
+                control="selectlib"
+                innerRef={techSelectRef}
+                fieldName={`${formSectionKey}.predefinedQuestions.technology`}
+                fieldLabel="Technology"
+                fieldPlaceHolder="Technology"
+                fieldOptions={testTypeOptions}
+                fieldClass="w-[400px] z-10"
                 />
 
                 <Field
-                    control="selectlib"
-                    fieldName={`${formSectionKey}.predefinedQuestions.questionType`}
-                    innerRef={quesTypeSelectRef}
-                    fieldLabel="Question Type"
-                    fieldPlaceHolder="Question Type"
-                    fieldOptions={testTypeOptions2}
-                    fieldClass="w-[400px] z-[10]"
+                control="selectlib"
+                fieldName={`${formSectionKey}.predefinedQuestions.questionType`}
+                innerRef={quesTypeSelectRef}
+                fieldLabel="Question Type"
+                fieldPlaceHolder="Question Type"
+                fieldOptions={testTypeOptions2}
+                fieldClass="w-[400px] z-[10]"
                 />
-                
+
                 <Button
-                    btnClass='rounded bg-blue-600 w-[80px] text-white p-2 mr-[2px] mt-[35px]'
-                    onClick={fetchTechQueryBaseData}
+                btnClass="rounded bg-blue-600 w-[80px] text-white p-2 mr-[2px] mt-[35px]"
+                onClick={fetchTechQueryBaseData}
                 >
-                    Search
+                Search
                 </Button>
                 <Button
-                    btnClass='rounded bg-blue-600 w-[80px] text-white p-2 mr-[2px] mt-[35px]'
-                    onClick={handleClearFields}
+                btnClass="rounded bg-blue-600 w-[80px] text-white p-2 mr-[2px] mt-[35px]"
+                onClick={handleClearFields}
                 >
-                    Clear
+                Clear
                 </Button>
                 <Button
-                    btnClass='rounded bg-blue-600 text-white p-2 mr-[2px] mt-[35px]'
-                    onClick={handleAddNewForm}
+                btnClass="rounded bg-blue-600 text-white p-2 mr-[2px] mt-[35px]"
+                onClick={handleAddNewForm}
                 >
-                    Add New Question
+                Add New Question
                 </Button>
-                
             </div>
 
-            <div className='h-[400px] my-5'>
+            <div className="h-[400px] my-5">
                 <DataGrid
-                    rows={rows}
-                    columns={columns}
-                    initialState={{
+                rows={rows}
+                columns={columns}
+                initialState={{
                     pagination: {
-                        paginationModel: { page: 0, pageSize: 5 },
+                    paginationModel: { page: 0, pageSize: 5 },
                     },
-                    }}
-                    pageSizeOptions={[5, 10]}
-                    checkboxSelection
-                    onChange={console.log}
-                    onCellClick={(value)=>console.log(value)}
-                    on
+                }}
+                pageSizeOptions={[5, 10]}
+                checkboxSelection
+                onCellClick={setSelectedQuestion}
                 />
             </div>
-                
-            {
-                console.log(DataGrid)
-            }
-            {
-                (showAddNewForm) && 
 
-                <AddNewQuestion setShowAddNewForm={setShowAddNewForm} testTypeOptions={testTypeOptions}/>
-                
-            }
-
+            {showAddNewForm && (
+                <AddNewQuestion
+                setShowAddNewForm={setShowAddNewForm}
+                testTypeOptions={testTypeOptions}
+                />
+            )}
+            </>
+        ) 
+        
+            : showError("value must be a positive number.")
+        }
         </div>
-    )
-}
+    );
+    };
 
-export default memo(PredefinedQuestions)
+    export default memo(PredefinedQuestions);

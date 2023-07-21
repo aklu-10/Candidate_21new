@@ -19,15 +19,51 @@ const CandidateScreeningTestCreation = () => {
             },
             _isValid:true
     });
-
+    // loader var=false, bool, setTimeout, loader component
     
 
     function handleSubmit(e)
     {
         e.preventDefault();
-        console.log(1)
+
         if(masterData._isValid)
-            console.log(masterData)
+        {
+
+            
+            let result = Object.keys(masterData.forms).map(form=>{
+                
+                return {
+                            test_type_key: masterData.forms[form].testType,
+                            test_name: masterData.forms[form].testName,
+                            is_screening_test: masterData.forms[form].screeningType,
+                            is_for_agent_panel: masterData.forms[form].managedBy.name==="Agent"?true:false,
+                            is_mcq: masterData.forms[form].managedBy._isMcq,
+                            no_of_predefined_questions: masterData.forms[form].predefinedQuestions.totalQuestions,
+                            total_no_question: masterData.forms[form].totalQuestions,
+                            predefined_questions: {
+                            no_of_predefined_questions: "",
+                            already_selected_question: [...masterData.forms[form].predefinedQuestions.selectedQuestion],
+                            newly_created_questions: []
+                            },
+                            random_questions: {
+                            no_of_random_question: masterData.forms[form].randomQuestions.totalQuestions,
+                            technologies:
+                                Object.keys(masterData.forms[form].randomQuestions.technology).map(({name, mcq, programming, descriptive})=>{
+                                        return {
+                                            technology_key: name,
+                                            question_type_details:{
+                                                mcq,
+                                                programming,
+                                                descriptive
+                                            }
+                                        }
+                                })
+                            }}
+
+                })
+
+            console.log(result);
+        }
     }
 
     return (
@@ -70,7 +106,6 @@ const CandidateScreeningTestCreation = () => {
 
                         <Button
                             btnClass={"rounded bg-gray-600 text-white p-2"}
-                            isBtnDisabled={masterData._isValid}
                             btnType="button"
                         >
                             Final Submit
