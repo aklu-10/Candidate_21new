@@ -1,9 +1,9 @@
 import FormContext from '../../context/FormContext';
 import CandidateTestSection from '../CandidateTestSection/CandidateTestSection';
 import Button from '../Button/Button';
+import React, { useState, memo, useRef } from 'react'
 import { ToastContainer } from 'react-toastify';
 import {candidateTestSectionBaseData} from '../../data/candidateTestSectionBaseData';
-import React, { useState, memo, useRef } from 'react'
 
 const CandidateScreeningTestCreation = () => {
 
@@ -11,25 +11,25 @@ const CandidateScreeningTestCreation = () => {
 
     const formIndex = useRef(1);
 
-    // base structure - { form1: { form1_Data }, form2: { form2_Data } }
+    // base structure - { form1: { form1_Data }, form2: { form2_Data }, ... }
     const [masterData, setMasterData] = useState({ 
 
             forms:{
                 ["form"+formIndex.current]:{...candidateTestSectionBaseData},
             },
-            _isValid:true
     });
+    const [isFormValid, setIsFormValid] = useState(false);
+
     // loader var=false, bool, setTimeout, loader component
-    
 
     function handleSubmit(e)
     {
         e.preventDefault();
 
-        if(masterData._isValid)
-        {
+        console.log(masterData)
 
-            
+        if(isFormValid)
+        {
             let result = Object.keys(masterData.forms).map(form=>{
                 
                 return {
@@ -52,9 +52,9 @@ const CandidateScreeningTestCreation = () => {
                                         return {
                                             technology_key: name,
                                             question_type_details:{
-                                                mcq,
-                                                programming,
-                                                descriptive
+                                                mcq:mcq ?? 0,
+                                                programming: programming ?? 0,
+                                                descriptive: descriptive ?? 0
                                             }
                                         }
                                 })
@@ -81,7 +81,7 @@ const CandidateScreeningTestCreation = () => {
                 theme="light"
             />
 
-            <FormContext.Provider value={{masterData, setMasterData, formIndex}}>
+            <FormContext.Provider value={{masterData, setMasterData, formIndex, setIsFormValid}}>
                 <div>
                     
                     {
@@ -94,12 +94,12 @@ const CandidateScreeningTestCreation = () => {
                     <div>
                         <Button
                             btnClass={
-                                masterData._isValid
+                                isFormValid
                                 ? "rounded bg-blue-600 text-white p-2 mr-[20px]"
                                 : "rounded bg-gray-600 text-white p-2 mr-[20px]"
                             }
-                            isBtnDisabled={masterData._isValid}
-                            onClick={handleSubmit}
+                            isBtnDisabled={isFormValid}
+                            onClick={(e)=>{handleSubmit(e), alert("date is logged")}}
                         >
                         Submit Candidate Test
                         </Button>
@@ -107,6 +107,7 @@ const CandidateScreeningTestCreation = () => {
                         <Button
                             btnClass={"rounded bg-gray-600 text-white p-2"}
                             btnType="button"
+                            onClick={()=>alert("Final Submission")}
                         >
                             Final Submit
                         </Button>

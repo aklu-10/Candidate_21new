@@ -1,4 +1,3 @@
-import React from "react";
 import Field from '../Field/Field';
 import TabSwitch from '../TabSwitch/TabSwitch';
 import RandomQuestions from "../RandomQuestions/RandomQuestions";
@@ -20,10 +19,8 @@ const CandidateTestSection = ({formSectionKey}) => {
 
     function handleAddNewFormSection()
     {
-
         setMasterData((prev)=>({...prev, forms:{ ...prev.forms, ["form"+(formIndex.current+1)] : {...candidateTestSectionBaseData}}}))
-
-        formIndex.current+=1;
+        formIndex.current++;
     }
 
     return (

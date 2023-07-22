@@ -11,8 +11,6 @@ const RandomQuestions = ({formSectionKey}) => {
 
     // console.log(masterData.forms[formSectionKey].randomQuestions.totalQuestions)
 
-
-
     return (
 
         <div>
@@ -34,7 +32,7 @@ const RandomQuestions = ({formSectionKey}) => {
 
                 Number(masterData.forms[formSectionKey].randomQuestions.totalQuestions) > 0 && 
 
-                Number(masterData.forms[formSectionKey].randomQuestions.totalQuestions) <= Number(masterData.forms[formSectionKey].totalQuestions) &&
+                (Number(masterData.forms[formSectionKey].randomQuestions.totalQuestions)) <= Number(masterData.forms[formSectionKey].totalQuestions) &&
 
                 <TechnologyFieldRandomQuestion formSectionKey={formSectionKey}/>
             }

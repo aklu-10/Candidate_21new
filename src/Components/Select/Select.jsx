@@ -2,7 +2,7 @@ import React, {memo, useContext} from 'react'
 import Label from '../Label/Label'
 import FormContext from '../../context/FormContext'
 
-const Select = ({fieldName, fieldLabel, fieldOptions, fieldClass, onClick}) => {
+const Select = ({fieldName, fieldLabel, fieldOptions, fieldClass, onClick, onChange}) => {
 
 
     const {setMasterData} = useContext(FormContext);
@@ -27,22 +27,42 @@ const Select = ({fieldName, fieldLabel, fieldOptions, fieldClass, onClick}) => {
         <Label labelName={fieldLabel} labelFor={fieldName}/>
         }
         
-        <select className='w-[100%] p-2 border bg-white rounded' onClick={onClick ?? handleSelectChange} >
+       {
+        onChange ? 
+        <select className='w-[100%] p-2 border bg-white rounded' onChange={onChange ?? handleSelectChange} >
 
-            {
-                (fieldName.split(".").length==1) && <option selected disabled>Please Select {fieldName} </option>
-            }
+        {
+            (fieldName.split(".").length==1) && <option selected disabled>Please Select {fieldName} </option>
+        }
 
-            {
-                fieldOptions.map((option, index)=>(
+        {
+            fieldOptions.map((option, index)=>(
 
-                    (typeof option === 'object')
-                    ? <option key={index} value={option.value}>{option.label}</option>
-                    : <option key={index} value={option}>{option}</option>
+                (typeof option === 'object')
+                ? <option key={index} value={option.value}>{option.label}</option>
+                : <option key={index} value={option}>{option}</option>
 
-                ))
-            }
-        </select>
+            ))
+        }
+    </select>
+    :
+    <select className='w-[100%] p-2 border bg-white rounded' onClick={onClick ?? handleSelectChange} >
+
+    {
+        (fieldName.split(".").length==1) && <option selected disabled>Please Select {fieldName} </option>
+    }
+
+    {
+        fieldOptions.map((option, index)=>(
+
+            (typeof option === 'object')
+            ? <option key={index} value={option.value}>{option.label}</option>
+            : <option key={index} value={option}>{option}</option>
+
+        ))
+    }
+</select>
+       }
 
         
 

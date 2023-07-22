@@ -134,12 +134,15 @@
 
     function showError(msg)
     {
-        toast.error(msg);
+        toast.info(msg);
     }
 
     return (
         <div className="relative">
-        <Field
+        
+        {
+            masterData.forms[formSectionKey].randomQuestions.totalQuestions !== masterData.forms[formSectionKey].totalQuestions &&
+            <Field
             control="input"
             fieldName={`${formSectionKey}.predefinedQuestions.totalQuestions`}
             fieldType="number"
@@ -148,12 +151,13 @@
             fieldPlaceHolder="Predefined Question"
             fieldErrorMsg="Error Message"
             fieldClass="w-[500px]"
-        />
+        /> 
+        }
 
         {
             
             masterData.forms[formSectionKey].predefinedQuestions.totalQuestions!='' && 
-            (Number(masterData.forms[formSectionKey].predefinedQuestions.totalQuestions) > 0) ?
+            (Number(masterData.forms[formSectionKey].predefinedQuestions.totalQuestions) > 0) && ( (Number(masterData.forms[formSectionKey].predefinedQuestions.totalQuestions) === Number(masterData.forms[formSectionKey].totalQuestions) && Number(masterData.forms[formSectionKey].randomQuestions.totalQuestions)===0  ) || (Number(masterData.forms[formSectionKey].predefinedQuestions.totalQuestions) + Number(masterData.forms[formSectionKey].randomQuestions.totalQuestions)) === Number(masterData.forms[formSectionKey].totalQuestions)   ) ?
         (
             <>
             <div className="flex justify-between items-center ">
@@ -221,7 +225,7 @@
             </>
         ) 
         
-            : showError("value must be a positive number.")
+            : !masterData.forms[formSectionKey].predefinedQuestions.totalQuestions && masterData.forms[formSectionKey].randomQuestions.totalQuestions!==masterData.forms[formSectionKey].totalQuestions   && showError("Please provide a value.")
         }
         </div>
     );

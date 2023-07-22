@@ -11,7 +11,7 @@ const Input = ({fieldLabel, fieldType, fieldPlaceHolder, fieldPattern, fieldErro
     console.log("Here are value - ", fieldValue)
 
     const [value, setValue] = useState(fieldValue);
-    const {masterData, setMasterData} = useContext(FormContext);
+    const {masterData, setMasterData, setIsFormValid } = useContext(FormContext);
 
     // handle input change function
     function handleInputChange(e)
@@ -20,13 +20,33 @@ const Input = ({fieldLabel, fieldType, fieldPlaceHolder, fieldPattern, fieldErro
         let keys = fieldName.split(".");
 
         if(fieldName.includes("randomQuestions.totalQuestions") || fieldName.includes("predefinedQuestions.totalQuestions"))
-        {
-            if(Number(e.target.value) > Number(masterData.forms[fieldName.split(".")[0]].totalQuestions))
-                toast.error("Value exceeds")
+        {   
 
-            if(Number(e.target.value) ===  Number(masterData.forms[keys[0]].totalQuestions)){
-                setMasterData((prev)=>({...prev, forms: { ...prev.forms, [keys[0]] : { ...prev.forms[keys[0]], predefinedQuestions: { ...prev.forms[keys[0]].predefinedQuestions, totalQuestions:"0" }}}}))
+   
+            if( (Number(e.target.value) + Number(masterData.forms[keys[0]][keys[1] === "randomQuestions" ? "predefinedQuestions" : "randomQuestions" ].totalQuestions)) !== Number(masterData.forms[fieldName.split(".")[0]].totalQuestions) ){
+                toast.info("Random and/or Predefined Value must be equal to the provided total questions")
+                setIsFormValid(false)
             }
+            else{
+                toast.success("Random and/or Predefined Value are equal to the provided total questions")
+                setIsFormValid(true)
+            }
+
+            // if(Number(e.target.value) ===  Number(masterData.forms[keys[0]].totalQuestions)){
+            //     setMasterData((prev)=>({...prev, forms: { ...prev.forms, [keys[0]] : { ...prev.forms[keys[0]], predefinedQuestions: { ...prev.forms[keys[0]].predefinedQuestions, totalQuestions:"0" }}}}))
+            // }
+
+            if(fieldName.includes("randomQuestions.totalQuestions"))
+            {   
+                if(Number(e.target.value) <= Number(masterData.forms[fieldName.split(".")[0]].totalQuestions))
+                    if(Number(e.target.value) < masterData.forms[keys[0]].totalQuestions){
+                        setMasterData((prev)=>({...prev, forms: {...prev.forms, [keys[0]]: { ...prev.forms[keys[0]], predefinedQuestions: { ...prev.forms[keys[0]].predefinedQuestions, [keys[2]]: Number(prev.forms[keys[0]].totalQuestions) - Number(e.target.value) }}}}))
+                        setIsFormValid(true)
+                    }
+                else
+                    setMasterData((prev)=>({...prev, forms: {...prev.forms, [keys[0]]: { ...prev.forms[keys[0]], predefinedQuestions: { ...prev.forms[keys[0]].predefinedQuestions, [keys[2]]: 0 }}}}))
+            }
+
     
         }
 
@@ -49,7 +69,8 @@ const Input = ({fieldLabel, fieldType, fieldPlaceHolder, fieldPattern, fieldErro
         {
             let pattern = new RegExp(fieldPattern);
             if(!pattern.test(e.target.value))
-                toast.error(fieldErrorMsg);
+                if(e.target.value!='')
+                    toast.error(fieldErrorMsg);
         }
 
         
@@ -87,7 +108,9 @@ const Input = ({fieldLabel, fieldType, fieldPlaceHolder, fieldPattern, fieldErro
         }
         
         {
+
             <input className='w-[100%] border p-2 rounded mb-2' id={fieldName} type={fieldType} placeholder={fieldPlaceHolder} value={allowDebounce ? undefined : value} onChange={ onChange ?? allowDebounce ? debouncedInputData : handleInputChange } />
+
         }
 
 

@@ -7,7 +7,17 @@ const Button = ({btnClass, onClick, children, isBtnDisabled, btnType="button"}) 
 
     <>
     {
-        <button className={btnClass} type={btnType} onClick={onClick}>
+        (isBtnDisabled === false)
+
+        ?
+
+        <button className={btnClass} type={btnType} disabled >
+          {children}
+        </button>
+    
+        :
+
+        <button className={btnClass} type={btnType} onClick={onClick} >
           {children}
         </button>
 
