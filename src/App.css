@@ -10,7 +10,19 @@
     font-family: sans-serif;
 }
 
+::-webkit-scrollbar
+{
+    width:5px;
+}
+
+::-webkit-scrollbar-thumb
+{
+    background-color: black;
+}
+
+
 body
 {
     padding: 10px;
+    background-color: #0e102c;
 }

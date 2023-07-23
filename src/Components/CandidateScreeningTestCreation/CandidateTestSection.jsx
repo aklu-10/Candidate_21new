@@ -6,7 +6,7 @@ import FormContext from "../../context/FormContext";
 import { useContext } from "react";
 import { candidateTestSectionBaseData } from "../../data/candidateTestSectionBaseData";
 
-const CandidateTestSection = ({formSectionKey}) => {
+const CandidateTestSection = ({formSectionKey, handleDeleteForm}) => {
     
     const {masterData, setMasterData, formIndex} = useContext(FormContext);
 
@@ -24,7 +24,7 @@ const CandidateTestSection = ({formSectionKey}) => {
     }
 
     return (
-        <div>
+        <div className='mb-[20px] border-gray-500 border-b-[1px] pb-[25px]'>
             <div className="flex items-center">
                 <Field
                 control="input"
@@ -37,7 +37,14 @@ const CandidateTestSection = ({formSectionKey}) => {
                 fieldClass="w-[500px]"
                 />
 
-                <span className="text-green-600/100 text-xl mt-[28px] ml-[20px] cursor-pointer" onClick={handleAddNewFormSection}>&#8853;</span>
+                <span className="text-white bg-[#044c8f] flex items-center justify-center text-xl mt-[40px] rounded-md ml-[20px] w-[35px] h-[35px] cursor-pointer " onClick={handleAddNewFormSection}>+</span>
+
+                {
+                    formSectionKey!=='form1' &&
+                <span className="text-white bg-[#044c8f] flex items-center justify-center text-xl mt-[40px] rounded-md ml-[20px] w-[35px] h-[35px] cursor-pointer " onClick={()=>handleDeleteForm(formSectionKey)}>-</span>
+                }
+
+
             </div>
 
             <Field
@@ -118,17 +125,22 @@ const CandidateTestSection = ({formSectionKey}) => {
                 fieldErrorMsg="Value must be an positive number"
                 fieldPattern="^[0-9]\d*"
                 fieldClass="w-[500px]"
-                allowDebounce={true}
+                fieldValue={masterData.forms[formSectionKey].totalQuestions}
+                // allowDebounce={true}
             />
 
+            {
+                masterData.forms[formSectionKey].testName &&   
+                <TabSwitch
+                    formSectionData={masterData.forms[formSectionKey]}
+                    tabs={[
+                    { label: "Random Questions", value: <RandomQuestions formSectionKey={formSectionKey}  /> },
+                    { label: "Predefined Questions", value: <PredefinedQuestions formSectionKey={formSectionKey} /> },
+                    ]}
+                />
+            }
 
-            <TabSwitch
-                formSectionData={masterData.forms[formSectionKey]}
-                tabs={[
-                { label: "Random Questions", value: <RandomQuestions formSectionKey={formSectionKey}  /> },
-                { label: "Predefined Questions", value: <PredefinedQuestions formSectionKey={formSectionKey} /> },
-                ]}
-            />
+
 
         </div>
     );

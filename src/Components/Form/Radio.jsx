@@ -1,30 +1,32 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Label from './Label/Label'
 import FormContext from '../../context/FormContext';
 
-const Radio = ({fieldLabel, fieldOptions, fieldClass, fieldName, fieldChecked, fieldDisabled, onChange}) => {
+const Radio = ({fieldLabel, fieldOptions, fieldClass, fieldName, fieldChecked, fieldDisabled, onChange, onClick}) => {
 
     const {masterData, setMasterData} = useContext(FormContext);
 
     const [value, setValue] = useState(fieldChecked);
 
-    console.log(onChange)
-
     function handleRadioChange(e)
     {   
-        console.log("asd")
-
         let keys = fieldName.split(".");
 
         if(keys.length===2)
             setMasterData((prev)=>({...prev, forms: {...prev.forms, [keys[0]]: { ...prev[keys[0]], [keys[1]]: e.target.value }}}));
         else if(keys.length===3)
             setMasterData((prev)=>({...prev, forms: {...prev.forms, [keys[0]]: { ...prev[keys[0]], [keys[1]]: { ...prev.forms[keys[0]][keys[1]], [keys[2]]: Boolean(e.target.value) }}}}))
-        
     }
-1
+
+    function handleRadioClick(e)
+    {
+        let keys = fieldName.split(".");
+        setMasterData((prev)=>({...prev, forms: {...prev.forms, [keys[0]]: { ...prev[keys[0]], [keys[1]]: { ...prev.forms[keys[0]][keys[1]], [keys[2]]: e.target.value }}}}))
+    }
+
     return (
         <div className={fieldClass}>
+
             {
                 (fieldLabel) && 
                 <Label labelName={fieldLabel}/>
@@ -32,39 +34,75 @@ const Radio = ({fieldLabel, fieldOptions, fieldClass, fieldName, fieldChecked, f
 
             <div className='flex'>
             {
-                fieldOptions.map((option, index)=>(
+             onClick ?
+             
+             fieldOptions.map((option, index)=>(
                     
-                    fieldChecked ? 
+                fieldChecked ? 
+                
+                (option.value === fieldChecked?.value)
+                
+                ?
+
+                <div className='flex items-center mr-[20px]' key={index}>
+
+                    <input type='radio' value={option?.value} name={fieldName} checked disabled={fieldDisabled} onClick={handleRadioClick}/>
                     
-                    (option.value === fieldChecked?.value)
+                    <Label labelName={option.label} fieldClass={'pb-[11px] px-1'}/>
+
+                </div>
+
+                : 
+
+                <div className='flex items-center mr-[20px]' key={index}>
+
+                    <input type='radio' value={option?.value} name={fieldName} disabled={fieldDisabled} onClick={handleRadioClick} />
                     
-                    ?
+                    <Label labelName={option.label} fieldClass={'pb-[11px] px-1'}/>
 
-                    <div className='flex items-center mr-[20px]' key={index}>
+                </div> :
+                <div className='flex items-center mr-[20px]' key={index}>
 
-                        <input type='radio' value={option?.value} name={fieldName} checked disabled={fieldDisabled} onChange={onChange ?? handleRadioChange}/>
-                        
-                        <Label labelName={option.label}/>
+                    <input type='radio' value={option?.value} name={fieldName} disabled={fieldDisabled} onClick={handleRadioClick} />
+                    
+                    <Label labelName={option.label}/>
 
-                    </div>
+                </div>
+            )) : 
+            fieldOptions.map((option, index)=>(
+                    
+                fieldChecked ? 
+                
+                (option.value === fieldChecked?.value)
+                
+                ?
 
-                    : 
+                <div className='flex items-center mr-[20px]' key={index}>
 
-                    <div className='flex items-center mr-[20px]' key={index}>
+                    <input type='radio' value={option?.value} name={fieldName} checked disabled={fieldDisabled} onChange={onChange ?? handleRadioChange}/>
+                    
+                    <Label labelName={option.label} fieldClass={'pb-[11px] px-1'}/>
 
-                        <input type='radio' value={option?.value} name={fieldName} disabled={fieldDisabled} onChange={onChange ?? handleRadioChange} />
-                        
-                        <Label labelName={option.label}/>
+                </div>
 
-                    </div> :
-                    <div className='flex items-center mr-[20px]' key={index}>
+                : 
 
-                        <input type='radio' value={option?.value} name={fieldName} disabled={fieldDisabled} onChange={onChange ?? handleRadioChange} />
-                        
-                        <Label labelName={option.label}/>
+                <div className='flex items-center mr-[20px]' key={index}>
 
-                    </div>
-                ))
+                    <input type='radio' value={option?.value} name={fieldName} disabled={fieldDisabled} onChange={onChange ?? handleRadioChange} />
+                    
+                    <Label labelName={option.label} fieldClass={'pb-[11px] px-1'}/>
+
+                </div> :
+                <div className='flex items-center mr-[20px]' key={index}>
+
+                    <input type='radio' value={option?.value} name={fieldName} disabled={fieldDisabled} onChange={onChange ?? handleRadioChange} />
+                    
+                    <Label labelName={option.label}/>
+
+                </div>
+            ))
+             
             }
             </div>
         </div>

@@ -12,6 +12,8 @@ const CandidateScreeningTestCreation = () => {
     console.log("Candidate Parent")
 
     const formIndex = useRef(1);
+    const [loader, setLoader] = useState(false);
+
 
     // base structure - { form1: { form1_Data }, form2: { form2_Data }, ... }
     const [masterData, setMasterData] = useState({ 
@@ -23,6 +25,7 @@ const CandidateScreeningTestCreation = () => {
     const [isFormValid, setIsFormValid] = useState(false);
 
     // loader var=false, bool, setTimeout, loader component
+
 
     function handleSubmit(e)
     {
@@ -69,6 +72,17 @@ const CandidateScreeningTestCreation = () => {
         }
     }
 
+    function handleDeleteForm(formName)
+    {
+        let copyMaster = {...masterData};
+        delete masterData.forms[formName]
+        setMasterData(copyMaster);
+        setLoader(true);
+        setTimeout(()=>{
+            setLoader(false)
+        },5)
+    }
+
     return (
 
         <>
@@ -90,7 +104,8 @@ const CandidateScreeningTestCreation = () => {
                     {
                         Object.keys(masterData.forms).map((formSectionKey, index)=>(
 
-                            <CandidateTestSection key={index} formSectionKey={formSectionKey}/>
+                            loader ? <p>Loading...</p> :
+                            <CandidateTestSection key={index} formSectionKey={formSectionKey} handleDeleteForm={handleDeleteForm}/>
                         ))
                     }
 

@@ -18,7 +18,7 @@ const TabSwitch = ({formSectionData, tabs}) => {
             tabs.map((tab, index)=>(
                 <Button
                   key={index}
-                  btnClass={`w-[800px] text-center ${ (tab.label===currentTab.label) ? ' border-b-4 border-indigo-500' : '' }`}
+                  btnClass={`w-[800px] text-center ${ (tab.label===currentTab.label) ? ' border-b-4 border-indigo-500 text-white ' : 'text-[rgba(255,255,255,.4)]' }`}
                   onClick={()=>setCurrentTab(tab)}
                 >
                   {tab.label}
@@ -26,10 +26,6 @@ const TabSwitch = ({formSectionData, tabs}) => {
             ))
         }
         </div>
-
-        {
-          console.log(tabs)
-        }
 
         <div>
         {

@@ -143,9 +143,9 @@ const AddNewQuestion = ({setShowAddNewForm, testTypeOptions}) => {
     return (
 
         <>
-            <div className='absolute top-[180px] right-[10px] my-4 bg-white shadow-lg z-10 p-4 py-4' >
+            <div className='absolute top-[180px] right-[10px] my-4 bg-[#0e102c] shadow-[1px_1px_2px_rgba(255,255,255,.57)] z-10 p-4 py-4 rounded' >
 
-                <h1>Add New Question</h1>
+                <h1 className='text-white'>Add New Question</h1>
 
                 <Field
                     control="select"

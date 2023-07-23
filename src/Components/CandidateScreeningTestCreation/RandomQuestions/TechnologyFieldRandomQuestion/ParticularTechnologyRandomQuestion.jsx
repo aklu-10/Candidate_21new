@@ -36,7 +36,50 @@ const ParticularTechnologyRandomQuestion = ({options, formSectionKey, handleAddN
 
                                 setMasterData((prev)=>({...prev, forms: { ...prev.forms, [formSectionKey] : {...prev.forms[formSectionKey], randomQuestions: {...prev.forms[formSectionKey].randomQuestions, technology: { ...prev.forms[formSectionKey].randomQuestions.technology ,[name]:{ ...prev.forms[formSectionKey].randomQuestions.technology[name], descriptive:e.target.value } } } } }}))
 
+
+                                if(Number(e.target.value) < 0 || e.target.value==='-' || Number(e.target.value) > masterData.forms[formSectionKey].randomQuestions.totalQuestions)
+                                {
+                                    toast.warn("Please provide a valid value");
+                                    setIsFormValid(false);
+                                    return;
+                                }
+                                let flag=0;
+                                let allValues = (Object.keys(masterData.forms[formSectionKey].randomQuestions.technology).map(techName=>{
+                                    
+                                    return (Object.keys(masterData.forms[formSectionKey].randomQuestions.technology[techName]).map(key=>{
+
+                                        if(key === "descriptive" && techName === name && !flag)
+                                        {
+                                            flag=1;
+                                            return Number(e.target.value)
+                                        }
+                                        else if(key==="mcq" || key ==="programming")
+                                            return Number(masterData.forms[formSectionKey].randomQuestions.technology[techName][key])
+                                    }).filter(value=>value!==undefined))
+                                    
+                                }))
+
+                                console.log(allValues)
+
+                                let combinedArr=[];
+                                allValues.map(value=>(combinedArr = [...combinedArr, ...value]))
+
+                                console.log(combinedArr.reduce((acc, item)=>Number(acc)+Number(item)));
+
+                                if((combinedArr.reduce((acc, item)=>Number(acc)+Number(item))) !== Number(masterData.forms[formSectionKey].randomQuestions.totalQuestions))
+                                {
+                                    toast.error("value must be equal to the random questions");
+                                    setIsFormValid(false);
+                                    return;
+                                }
+
+
+                                setIsFormValid(true);
+
                                 }}
+
+
+
                         />
                         <Field
                             control="input"
@@ -50,6 +93,42 @@ const ParticularTechnologyRandomQuestion = ({options, formSectionKey, handleAddN
                             onChange={(e)=>{
 
                                 setMasterData((prev)=>({...prev, forms: { ...prev.forms, [formSectionKey] : {...prev.forms[formSectionKey], randomQuestions: {...prev.forms[formSectionKey].randomQuestions, technology: { ...prev.forms[formSectionKey].randomQuestions.technology ,[name]:{ ...prev.forms[formSectionKey].randomQuestions.technology[name], programming:e.target.value } } } } }}))
+                                
+
+                                if(Number(e.target.value) < 0 || e.target.value==='-')
+                                {
+                                    toast.warn("Please provide a valid value");
+                                    setIsFormValid(false)
+                                    return;
+                                }
+
+                                let allValues = (Object.keys(masterData.forms[formSectionKey].randomQuestions.technology).map(techName=>{
+                                 
+                                    return Object.keys(masterData.forms[formSectionKey].randomQuestions.technology[techName]).map(key=>{
+
+                                        console.log(techName, key, name)
+                                        if(key === "programming" && techName === name){
+                                            return Number(e.target.value)
+                                        }
+                                        else if(key==="mcq" || key ==="descriptive" || key=="programming")
+                                            return Number(masterData.forms[formSectionKey].randomQuestions.technology[techName][key])   
+                                    }).filter(value=>value!=undefined)
+                                    
+                                }))
+
+                                let combinedArr=[];
+                                allValues.map(value=>(combinedArr = [...combinedArr, ...value]))
+
+                                console.log(allValues)
+
+                                if(combinedArr.reduce((acc, item)=>Number(acc)+Number(item)) !== Number(masterData.forms[formSectionKey].randomQuestions.totalQuestions))
+                                {
+                                    toast.error("value must be equal to the random questions");
+                                    setIsFormValid(false);
+                                    return;
+                                }
+
+                                setIsFormValid(true)
 
                                 }}
 
@@ -66,8 +145,45 @@ const ParticularTechnologyRandomQuestion = ({options, formSectionKey, handleAddN
                             fieldPlaceHolder="Random Questions"
                             onChange={(e)=>{
 
-
                                 setMasterData((prev)=>({...prev, forms: { ...prev.forms, [formSectionKey] : {...prev.forms[formSectionKey], randomQuestions: {...prev.forms[formSectionKey].randomQuestions, technology: { ...prev.forms[formSectionKey].randomQuestions.technology , [name] : { ...prev.forms[formSectionKey].randomQuestions.technology[name], mcq:e.target.value } } } } }}))   
+                                
+
+                                if(Number(e.target.value) < 0 || e.target.value==='-')
+                                {
+                                    toast.warn("Please provide a valid value");
+                                    setIsFormValid(false)
+                                    return;
+                                }
+
+                                let flag=0;
+
+
+                                let allValues = (Object.keys(masterData.forms[formSectionKey].randomQuestions.technology).map(techName=>{
+                                 
+                                    return Object.keys(masterData.forms[formSectionKey].randomQuestions.technology[techName]).map(key=>{
+
+                                        if(key === "mcq" && techName === name && !flag){
+                                            flag=1;
+                                            return Number(e.target.value)
+                                        }
+                                        else if(key==="programming" || key ==="descriptive")
+                                            return Number(masterData.forms[formSectionKey].randomQuestions.technology[techName][key])
+
+                                    }).filter(value=>value!=undefined)
+                                    
+                                }))
+
+                                let combinedArr=[];
+                                allValues.map(value=>(combinedArr = [...combinedArr, ...value]))
+
+                                if(combinedArr.reduce((acc, item)=>Number(acc)+Number(item)) !== Number(masterData.forms[formSectionKey].randomQuestions.totalQuestions))
+                                {
+                                    toast.error("value must be equal to the random questions");
+                                    setIsFormValid(false);
+                                    return;
+                                }
+
+                                setIsFormValid(true)
 
                                 }}
 
@@ -97,8 +213,6 @@ const ParticularTechnologyRandomQuestion = ({options, formSectionKey, handleAddN
                             return Number(e.target.value)
                         return Number(masterData.forms[formSectionKey].randomQuestions.technology[techName]?.mcq ?? 0)
                     })
-
-                    console.log(res)
 
                     if((res.reduce((acc, item)=>acc+item)) === Number(masterData.forms[formSectionKey].randomQuestions.totalQuestions))
                     {
@@ -206,17 +320,23 @@ const ParticularTechnologyRandomQuestion = ({options, formSectionKey, handleAddN
                 }}
                 />
 
-                <span className="text-green-600/100 text-xl mt-[40px] ml-[20px] cursor-pointer"
+                {
+                    name==="technology1" && 
+                    
+                <span className="text-white bg-[#044c8f] flex items-center justify-center text-sm px-4 mt-[40px] rounded-md ml-[20px] h-[30px] cursor-pointer"
                 onClick={handleAddNewTechField}
                 >
-                &#8853;
+                Add technology
                 </span>
+                }
+
                 {
                     index!=0 &&
-                    <span className="text-green-600/100 text-xl mt-[40px] ml-[20px] cursor-pointer"
+                  
+                    <span className="text-white bg-[#044c8f] flex items-center justify-center text-xl mt-[40px] rounded-md ml-[20px] w-[30px] h-[30px] cursor-pointer"
                     onClick={()=>handleDeleteSpecificField(allTechnologyObj, name)}
                     >
-                    &#8722;
+                    -
                     </span>
                 }
             </div>
