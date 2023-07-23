@@ -12,9 +12,6 @@ export const candidateTestSectionBaseData = {
     randomQuestions:
     {
         totalQuestions:'',
-        totalMcq:0,
-        totalProgramming:0,
-        totalDescriptive:0,
         technology:{ technology1 : { } },
         questions:[]
     },

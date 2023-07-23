@@ -1,9 +1,11 @@
+import CandidateTestSection from './CandidateTestSection';
 import FormContext from '../../context/FormContext';
-import CandidateTestSection from '../CandidateTestSection/CandidateTestSection';
 import Button from '../Button/Button';
 import React, { useState, memo, useRef } from 'react'
-import { ToastContainer } from 'react-toastify';
 import {candidateTestSectionBaseData} from '../../data/candidateTestSectionBaseData';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const CandidateScreeningTestCreation = () => {
 
@@ -48,13 +50,14 @@ const CandidateScreeningTestCreation = () => {
                             random_questions: {
                             no_of_random_question: masterData.forms[form].randomQuestions.totalQuestions,
                             technologies:
-                                Object.keys(masterData.forms[form].randomQuestions.technology).map(({name, mcq, programming, descriptive})=>{
+                                Object.keys(masterData.forms[form].randomQuestions.technology).map((tech)=>{
+                                        console.log(tech)
                                         return {
-                                            technology_key: name,
+                                            technology_key: masterData.forms[form].randomQuestions.technology[tech].name,
                                             question_type_details:{
-                                                mcq:mcq ?? 0,
-                                                programming: programming ?? 0,
-                                                descriptive: descriptive ?? 0
+                                                mcq:masterData.forms[form].randomQuestions.technology[tech].mcq ?? 0,
+                                                programming: masterData.forms[form].randomQuestions.technology[tech].programming ?? 0,
+                                                descriptive: masterData.forms[form].randomQuestions.technology[tech].descriptive ?? 0
                                             }
                                         }
                                 })

@@ -1,9 +1,7 @@
 import FormContext from '../../context/FormContext';
 import Button from '../Button/Button';
-import PredefinedQuestions from '../PredefinedQuestions/PredefinedQuestions';
-import RandomQuestions from '../RandomQuestions/RandomQuestions';
 import { useContext } from 'react';
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useState } from 'react'
 
 const TabSwitch = ({formSectionData, tabs}) => {
 
