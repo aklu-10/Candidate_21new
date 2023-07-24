@@ -216,11 +216,14 @@
                     color:'white',
                     borderColor: 'primary.light',
                     '& .MuiDataGrid-cell:hover': {
-                      color: 'primary.main',
+                    color: 'primary.main',
                     },
                     '& .MuiToolbar-root': {
                         color: 'white',
-                      },                    
+                    }, 
+                    '& .MuiSvgIcon-root':{
+                        color: 'white'
+                    }
                 }}
                 pageSizeOptions={[5, 10]}
                 checkboxSelection

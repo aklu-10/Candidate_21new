@@ -257,9 +257,9 @@ const ParticularTechnologyRandomQuestion = ({options, formSectionKey, handleAddN
                 fieldOptions={options}
                 fieldDefaultValue={allTechnologyObj[name].selected}
                 fieldClass="w-[500px]"
-                onClick={(e, setValue)=>{ 
-                    
-                    setValue(e.target.value)
+                onClick={(e)=>{ 
+
+                    // setValue(e.target.value)
 
                     let selected = { name:name, selected: {label: e.target.value, value: e.target.value} }
 
@@ -339,7 +339,7 @@ const ParticularTechnologyRandomQuestion = ({options, formSectionKey, handleAddN
                 {
                     name==="technology1" && 
                     
-                <span className="text-white bg-[#044c8f] flex items-center justify-center text-sm px-4 mt-[40px] rounded-md ml-[20px] h-[30px] cursor-pointer"
+                <span className="text-white bg-[#262c77] flex items-center justify-center text-sm px-4 mt-[40px] rounded-md ml-[20px] h-[30px] cursor-pointer shadow-[1px_1px_2px_black,-1px_-1px_2px_rgba(255,255,255,.2)]"
                 onClick={handleAddNewTechField}
                 >
                 Add technology
@@ -349,7 +349,7 @@ const ParticularTechnologyRandomQuestion = ({options, formSectionKey, handleAddN
                 {
                     index!=0 &&
                   
-                    <span className="text-white bg-[#044c8f] flex items-center justify-center text-xl mt-[40px] rounded-md ml-[20px] w-[30px] h-[30px] cursor-pointer"
+                    <span className="text-white bg-[#262c77] flex items-center justify-center text-xl mt-[40px] rounded-md ml-[20px] w-[30px] h-[30px] cursor-pointer shadow-[1px_1px_2px_black,-1px_-1px_2px_rgba(255,255,255,.2)]"
                     onClick={()=>handleDeleteSpecificField(allTechnologyObj, name)}
                     >
                     -

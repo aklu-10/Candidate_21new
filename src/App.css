@@ -12,17 +12,18 @@
 
 ::-webkit-scrollbar
 {
-    width:5px;
+    width:6px;
 }
 
 ::-webkit-scrollbar-thumb
 {
     background-color: black;
+    border-radius: 10px;
 }
 
 
 body
 {
     padding: 10px;
-    background-color: #0e102c;
+    background-color: #262c77;
 }

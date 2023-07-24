@@ -6,10 +6,6 @@ import { toast } from 'react-toastify';
 
 const Input = ({fieldLabel, fieldType, fieldPlaceHolder, fieldPattern, fieldErrorMsg, fieldName, fieldValue, fieldClass, onChange, stateSetter=null, allowDebounce=false}) => {
 
-    console.log("Input")
-
-    console.log("Here are value - ", fieldValue)
-
     const [value, setValue] = useState(fieldValue);
     const {masterData, setMasterData, setIsFormValid } = useContext(FormContext);
 
@@ -101,7 +97,7 @@ const Input = ({fieldLabel, fieldType, fieldPlaceHolder, fieldPattern, fieldErro
         
         {
 
-            <input className='w-[100%] border p-2 rounded mb-2 text-[rgba(255,255,255,.9)] border-none bg-[#0e102c] shadow-[-1px_-1px_5px_black,1px_1px_1px_rgba(255,255,255,.2)] focus:outline-none hover:shadow-[1px_1px_5px_black]' id={fieldName} type={fieldType} placeholder={fieldPlaceHolder} value={allowDebounce ? undefined : value} onChange={ (e)=> {onChange && onChange(e, setValue) || allowDebounce ? debouncedInputData(e) : handleInputChange(e) }} />
+            <input className='w-[100%] border p-2 rounded mb-2 text-[rgba(255,255,255,.9)] border-none bg-[#262c77] shadow-[-1px_-1px_5px_black,1px_1px_1px_rgba(255,255,255,.2)] focus:outline-none hover:shadow-[1px_1px_5px_black]' id={fieldName} type={fieldType} placeholder={fieldPlaceHolder} value={allowDebounce ? undefined : value} onChange={ (e)=> {onChange && onChange(e, setValue) || allowDebounce ? debouncedInputData(e) : handleInputChange(e) }} />
 
         }
 

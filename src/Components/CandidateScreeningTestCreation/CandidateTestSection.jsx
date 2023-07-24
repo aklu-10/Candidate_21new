@@ -49,11 +49,11 @@ const CandidateTestSection = ({formSectionKey, handleDeleteForm}) => {
                 fieldClass="w-[500px]"
                 />
 
-                <span className="text-white bg-[#044c8f] flex items-center justify-center text-xl mt-[40px] rounded-md ml-[20px] w-[35px] h-[35px] cursor-pointer " onClick={handleAddNewFormSection}>+</span>
+                <span className="text-white bg-[#262c77] flex items-center justify-center text-xl mt-[40px] rounded-md ml-[20px] w-[35px] h-[35px] cursor-pointer shadow-[1px_1px_2px_black,-1px_-1px_2px_rgba(255,255,255,.2)] " onClick={handleAddNewFormSection}>+</span>
 
                 {
                     formSectionKey!=='form1' &&
-                <span className="text-white bg-[#044c8f] flex items-center justify-center text-xl mt-[40px] rounded-md ml-[20px] w-[35px] h-[35px] cursor-pointer " onClick={()=>handleDeleteForm(formSectionKey)}>-</span>
+                <span className="text-white bg-[#262c77] flex items-center justify-center text-xl mt-[40px] rounded-md ml-[20px] w-[35px] h-[35px] cursor-pointer shadow-[1px_1px_2px_black,-1px_-1px_2px_rgba(255,255,255,.2)] " onClick={()=>handleDeleteForm(formSectionKey)}>-</span>
                 }
 
 
