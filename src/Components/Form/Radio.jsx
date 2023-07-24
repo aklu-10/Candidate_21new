@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { memo, useContext, useEffect, useState } from 'react'
 import Label from './Label/Label'
 import FormContext from '../../context/FormContext';
 
@@ -21,7 +21,11 @@ const Radio = ({fieldLabel, fieldOptions, fieldClass, fieldName, fieldChecked, f
     function handleRadioClick(e)
     {
         let keys = fieldName.split(".");
-        setMasterData((prev)=>({...prev, forms: {...prev.forms, [keys[0]]: { ...prev[keys[0]], [keys[1]]: { ...prev.forms[keys[0]][keys[1]], [keys[2]]: e.target.value }}}}))
+        setMasterData((prev)=>({...prev, forms: {...prev.forms, [keys[0]]: { ...prev.forms[keys[0]], [keys[1]]: { ...prev.forms[keys[0]][keys[1]], [keys[2]]: e.target.value }}}}))
+
+        // setLoader(true)
+
+        // setTimeout(()=>setLoader(false),10)
     }
 
     return (
@@ -109,4 +113,4 @@ const Radio = ({fieldLabel, fieldOptions, fieldClass, fieldName, fieldChecked, f
     )
 }
 
-export default Radio
+export default memo(Radio)

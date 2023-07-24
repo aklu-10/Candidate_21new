@@ -1,9 +1,9 @@
-import React, { memo, useContext, useEffect } from "react";
+import React, { memo, useContext, useEffect, useState } from "react";
 import Field from "../../../Form/Field";
 import FormContext from "../../../../context/FormContext";
 import { toast } from "react-toastify";
 
-const ParticularTechnologyRandomQuestion = ({options, formSectionKey, handleAddNewTechField, name, allTechnologyObj, initialData, setAllTechnologyObj, index, handleDeleteSpecificField}) => {
+const ParticularTechnologyRandomQuestion = ({options, formSectionKey, handleAddNewTechField, name, allTechnologyObj, initialData, setAllTechnologyObj, index, handleDeleteSpecificField, setLoader}) => {
 
     const {masterData, setMasterData, setIsFormValid} = useContext(FormContext);
 
@@ -18,79 +18,89 @@ const ParticularTechnologyRandomQuestion = ({options, formSectionKey, handleAddN
 
     function conditionalQuestionTotalRender(Mname, isMcq)
     {
+        
         if(Mname === "Candidate")
         {
+            return (isMcq === "true") ?
 
-            return  (<>
+            (       <Field
+                    control="input"
+                    fieldName={`${formSectionKey}.randomQuestions.totalMcq`}
+                    fieldValue={masterData.forms[formSectionKey].randomQuestions.technology[name]?.mcq}
+                    fieldType="number"
+                    fieldLabel="No. Of MCQ Questions"
+                    fieldErrorMsg="No. Of MCQ Questions"
+                    fieldPattern="^[0-9]\d*"
+                    fieldClass="w-[350px]"
+                    fieldPlaceHolder="Random Questions"
+                    onChange={(e, setValue)=>{
 
-                        <Field
-                            control="input"
-                            fieldName={`${formSectionKey}.randomQuestions.totalDescriptive`}
-                            fieldType="number"
-                            fieldLabel="No. of descreptive Questions"
-                            fieldErrorMsg="No. Of Descreptive Questions"
-                            fieldPattern="^[0-9]\d*"
-                            fieldClass="w-[350px]"
-                            fieldPlaceHolder="Descreptive Questions"
-                            onChange={(e)=>{
+                        setValue(e.target.value)
+                        setMasterData((prev)=>({...prev, forms: { ...prev.forms, [formSectionKey] : {...prev.forms[formSectionKey], randomQuestions: {...prev.forms[formSectionKey].randomQuestions, technology: { ...prev.forms[formSectionKey].randomQuestions.technology , [name] : { ...prev.forms[formSectionKey].randomQuestions.technology[name], mcq:e.target.value } } } } }}))   
+                        
 
-                                setMasterData((prev)=>({...prev, forms: { ...prev.forms, [formSectionKey] : {...prev.forms[formSectionKey], randomQuestions: {...prev.forms[formSectionKey].randomQuestions, technology: { ...prev.forms[formSectionKey].randomQuestions.technology ,[name]:{ ...prev.forms[formSectionKey].randomQuestions.technology[name], descriptive:e.target.value } } } } }}))
+                        if(Number(e.target.value) < 0 || e.target.value==='-')
+                        {
+                            toast.warn("Please provide a valid value");
+                            setIsFormValid(false)
+                            return;
+                        }
+
+                        let flag=0;
 
 
-                                if(Number(e.target.value) < 0 || e.target.value==='-' || Number(e.target.value) > masterData.forms[formSectionKey].randomQuestions.totalQuestions)
-                                {
-                                    toast.warn("Please provide a valid value");
-                                    setIsFormValid(false);
-                                    return;
+                        let allValues = (Object.keys(masterData.forms[formSectionKey].randomQuestions.technology).map(techName=>{
+                         
+                            return Object.keys(masterData.forms[formSectionKey].randomQuestions.technology[techName]).map(key=>{
+
+                                if(key === "mcq" && techName === name && !flag){
+                                    flag=1;
+                                    return Number(e.target.value)
                                 }
-                                let flag=0;
-                                let allValues = (Object.keys(masterData.forms[formSectionKey].randomQuestions.technology).map(techName=>{
-                                    
-                                    return (Object.keys(masterData.forms[formSectionKey].randomQuestions.technology[techName]).map(key=>{
+                                else if(key==="programming" || key ==="descriptive" || key==="mcq")
+                                    return Number(masterData.forms[formSectionKey].randomQuestions.technology[techName][key])
 
-                                        if(key === "descriptive" && techName === name && !flag)
-                                        {
-                                            flag=1;
-                                            return Number(e.target.value)
-                                        }
-                                        else if(key==="mcq" || key ==="programming")
-                                            return Number(masterData.forms[formSectionKey].randomQuestions.technology[techName][key])
-                                    }).filter(value=>value!==undefined))
-                                    
-                                }))
+                            }).filter(value=>value!=undefined)
+                            
+                        }))
 
-                                console.log(allValues)
+                        let combinedArr=[];
+                        allValues.map(value=>(combinedArr = [...combinedArr, ...value]))
 
-                                let combinedArr=[];
-                                allValues.map(value=>(combinedArr = [...combinedArr, ...value]))
+                        if(combinedArr.reduce((acc, item)=>Number(acc)+Number(item)) !== Number(masterData.forms[formSectionKey].randomQuestions.totalQuestions))
+                        {
+                            toast.error("value must be equal to the random questions");
+                            setIsFormValid(false);
+                            return;
+                        }
 
-                                console.log(combinedArr.reduce((acc, item)=>Number(acc)+Number(item)));
+                        setIsFormValid(true)
 
-                                if((combinedArr.reduce((acc, item)=>Number(acc)+Number(item))) !== Number(masterData.forms[formSectionKey].randomQuestions.totalQuestions))
-                                {
-                                    toast.error("value must be equal to the random questions");
-                                    setIsFormValid(false);
-                                    return;
-                                }
+                        }}
+
+                />
 
 
-                                setIsFormValid(true);
+            )
 
-                                }}
+            :
 
+                   (<>
 
-
-                        />
+             
                         <Field
                             control="input"
                             fieldName={`${formSectionKey}.randomQuestions.totalProgramming`}
+                            fieldValue={masterData.forms[formSectionKey].randomQuestions.technology[name]?.programming}
                             fieldType="number"
                             fieldLabel="No. Of Programming Questions"
                             fieldErrorMsg="No. Of Programming Questions"
                             fieldPattern="^[0-9]\d*"
                             fieldClass="w-[350px]"
                             fieldPlaceHolder="Programming Questions"
-                            onChange={(e)=>{
+                            onChange={(e, setValue)=>{
+
+                                setValue(e.target.value)
 
                                 setMasterData((prev)=>({...prev, forms: { ...prev.forms, [formSectionKey] : {...prev.forms[formSectionKey], randomQuestions: {...prev.forms[formSectionKey].randomQuestions, technology: { ...prev.forms[formSectionKey].randomQuestions.technology ,[name]:{ ...prev.forms[formSectionKey].randomQuestions.technology[name], programming:e.target.value } } } } }}))
                                 
@@ -134,59 +144,63 @@ const ParticularTechnologyRandomQuestion = ({options, formSectionKey, handleAddN
 
                         />
 
-                        <Field
-                            control="input"
-                            fieldName={`${formSectionKey}.randomQuestions.totalMcq`}
-                            fieldType="number"
-                            fieldLabel="No. Of MCQ Questions"
-                            fieldErrorMsg="No. Of MCQ Questions"
-                            fieldPattern="^[0-9]\d*"
-                            fieldClass="w-[350px]"
-                            fieldPlaceHolder="Random Questions"
-                            onChange={(e)=>{
+                <Field
+                control="input"
+                fieldName={`${formSectionKey}.randomQuestions.totalDescriptive`}
+                fieldValue={masterData.forms[formSectionKey].randomQuestions.technology[name]?.descriptive}
+                fieldType="number"
+                fieldLabel="No. of descreptive Questions"
+                fieldErrorMsg="No. Of Descreptive Questions"
+                fieldPattern="^[0-9]\d*"
+                fieldClass="w-[350px]"
+                fieldPlaceHolder="Descreptive Questions"
+                onChange={(e, setValue)=>{
 
-                                setMasterData((prev)=>({...prev, forms: { ...prev.forms, [formSectionKey] : {...prev.forms[formSectionKey], randomQuestions: {...prev.forms[formSectionKey].randomQuestions, technology: { ...prev.forms[formSectionKey].randomQuestions.technology , [name] : { ...prev.forms[formSectionKey].randomQuestions.technology[name], mcq:e.target.value } } } } }}))   
-                                
+                    setValue(e.target.value)
 
-                                if(Number(e.target.value) < 0 || e.target.value==='-')
-                                {
-                                    toast.warn("Please provide a valid value");
-                                    setIsFormValid(false)
-                                    return;
-                                }
-
-                                let flag=0;
+                    setMasterData((prev)=>({...prev, forms: { ...prev.forms, [formSectionKey] : {...prev.forms[formSectionKey], randomQuestions: {...prev.forms[formSectionKey].randomQuestions, technology: { ...prev.forms[formSectionKey].randomQuestions.technology ,[name]:{ ...prev.forms[formSectionKey].randomQuestions.technology[name], descriptive:e.target.value } } } } }}))
 
 
-                                let allValues = (Object.keys(masterData.forms[formSectionKey].randomQuestions.technology).map(techName=>{
-                                 
-                                    return Object.keys(masterData.forms[formSectionKey].randomQuestions.technology[techName]).map(key=>{
+                    if(Number(e.target.value) < 0 || e.target.value==='-' || Number(e.target.value) > masterData.forms[formSectionKey].randomQuestions.totalQuestions)
+                    {
+                        toast.warn("Please provide a valid value");
+                        setIsFormValid(false);
+                        return;
+                    }
+                    let flag=0;
+                    let allValues = (Object.keys(masterData.forms[formSectionKey].randomQuestions.technology).map(techName=>{
+                        
+                        return (Object.keys(masterData.forms[formSectionKey].randomQuestions.technology[techName]).map(key=>{
 
-                                        if(key === "mcq" && techName === name && !flag){
-                                            flag=1;
-                                            return Number(e.target.value)
-                                        }
-                                        else if(key==="programming" || key ==="descriptive")
-                                            return Number(masterData.forms[formSectionKey].randomQuestions.technology[techName][key])
+                            if(key === "descriptive" && techName === name && !flag)
+                            {
+                                flag=1;
+                                return Number(e.target.value)
+                            }
+                            else if(key==="mcq" || key ==="programming" || key==="descriptive")
+                                return Number(masterData.forms[formSectionKey].randomQuestions.technology[techName][key])
+                        }).filter(value=>value!==undefined))
+                        
+                    }))
 
-                                    }).filter(value=>value!=undefined)
-                                    
-                                }))
+                    console.log(allValues)
 
-                                let combinedArr=[];
-                                allValues.map(value=>(combinedArr = [...combinedArr, ...value]))
+                    let combinedArr=[];
+                    allValues.map(value=>(combinedArr = [...combinedArr, ...value]))
 
-                                if(combinedArr.reduce((acc, item)=>Number(acc)+Number(item)) !== Number(masterData.forms[formSectionKey].randomQuestions.totalQuestions))
-                                {
-                                    toast.error("value must be equal to the random questions");
-                                    setIsFormValid(false);
-                                    return;
-                                }
+                    console.log(combinedArr.reduce((acc, item)=>Number(acc)+Number(item)));
 
-                                setIsFormValid(true)
+                    if((combinedArr.reduce((acc, item)=>Number(acc)+Number(item))) !== Number(masterData.forms[formSectionKey].randomQuestions.totalQuestions))
+                    {
+                        toast.error("value must be equal to the random questions");
+                        setIsFormValid(false);
+                        return;
+                    }
 
-                                }}
 
+                    setIsFormValid(true);
+
+                    }}
                         />
                     </>)
 
@@ -197,6 +211,7 @@ const ParticularTechnologyRandomQuestion = ({options, formSectionKey, handleAddN
             return ( <Field
                 control="input"
                 fieldName={`${formSectionKey}.randomQuestions.totalMcq`}
+                fieldValue={masterData.forms[formSectionKey].randomQuestions.technology[name]?.mcq}
                 fieldType="number"
                 fieldLabel="No. Of MCQ Questions"
                 fieldErrorMsg="No. Of MCQ Questions"
@@ -242,8 +257,9 @@ const ParticularTechnologyRandomQuestion = ({options, formSectionKey, handleAddN
                 fieldOptions={options}
                 fieldDefaultValue={allTechnologyObj[name].selected}
                 fieldClass="w-[500px]"
-                onClick={(e)=>{ 
+                onClick={(e, setValue)=>{ 
                     
+                    setValue(e.target.value)
 
                     let selected = { name:name, selected: {label: e.target.value, value: e.target.value} }
 

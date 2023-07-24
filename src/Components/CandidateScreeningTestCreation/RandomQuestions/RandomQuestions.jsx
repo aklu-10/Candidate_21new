@@ -8,8 +8,6 @@ const RandomQuestions = ({formSectionKey}) => {
 
     const {masterData} = useContext(FormContext);
 
-    // console.log(masterData.forms[formSectionKey].randomQuestions.totalQuestions)
-
     return (
 
         <div>

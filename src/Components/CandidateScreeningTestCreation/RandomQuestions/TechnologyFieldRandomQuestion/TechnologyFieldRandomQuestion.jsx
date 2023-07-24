@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react'
 import ParticularTechnologyRandomQuestion from '../TechnologyFieldRandomQuestion/ParticularTechnologyRandomQuestion';
 import FormContext from '../../../../context/FormContext';
+import { TabContext } from '../../CandidateTestSection';
 
 const TechnologyFieldRandomQuestion = ({formSectionKey}) => {
 
@@ -13,8 +14,8 @@ const TechnologyFieldRandomQuestion = ({formSectionKey}) => {
         { label: 'JavaScript', value: 'JavaScript' }
     ]
     
+    const {allTechnologyObj, setAllTechnologyObj} = useContext(TabContext)
 
-    const [allTechnologyObj, setAllTechnologyObj] = useState({ technology1 : { technologies:[...testTypeOptions2], selected:testTypeOptions2[0] }});
 
     const [loader, setLoader] = useState(false);
 
@@ -96,7 +97,7 @@ const TechnologyFieldRandomQuestion = ({formSectionKey}) => {
             {
                 !loader &&
                 Object.keys(allTechnologyObj).map((technology, index)=>(
-                    <ParticularTechnologyRandomQuestion key={index} index={index} options={allTechnologyObj[technology].technologies} formSectionKey={formSectionKey} handleAddNewTechField={handleAddNewTechField} name={technology} allTechnologyObj={allTechnologyObj} initialData={testTypeOptions2} setAllTechnologyObj={setAllTechnologyObj} handleDeleteSpecificField={handleDeleteSpecificField} />
+                    <ParticularTechnologyRandomQuestion key={index} index={index} options={allTechnologyObj[technology].technologies} formSectionKey={formSectionKey} handleAddNewTechField={handleAddNewTechField} name={technology} allTechnologyObj={allTechnologyObj} initialData={testTypeOptions2} setAllTechnologyObj={setAllTechnologyObj} handleDeleteSpecificField={handleDeleteSpecificField} setLoader={setLoader}/>
                 ))
             }
 

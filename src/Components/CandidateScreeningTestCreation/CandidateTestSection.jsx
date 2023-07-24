@@ -3,12 +3,24 @@ import TabSwitch from '../TabSwitch/TabSwitch';
 import RandomQuestions from '../CandidateScreeningTestCreation/RandomQuestions/RandomQuestions';
 import PredefinedQuestions from '../CandidateScreeningTestCreation/PredefinedQuestions/PredefinedQuestions';
 import FormContext from "../../context/FormContext";
-import { useContext } from "react";
+import { createContext, memo, useContext, useState } from "react";
 import { candidateTestSectionBaseData } from "../../data/candidateTestSectionBaseData";
+
+export let TabContext = createContext({})
+
+let testTypeOptions2 = [
+    { label: 'Python', value: 'Python' },
+    { label: 'Java', value: 'Java' },
+    { label: 'React', value: 'React' },
+    { label: 'JavaScript', value: 'JavaScript' }
+]
 
 const CandidateTestSection = ({formSectionKey, handleDeleteForm}) => {
     
     const {masterData, setMasterData, formIndex} = useContext(FormContext);
+
+    const [allTechnologyObj, setAllTechnologyObj] = useState({ technology1 : { technologies:[...testTypeOptions2], selected:testTypeOptions2[0] }});
+
 
     let testTypeOptions = [
             { label: 'coding', value: 'coding' },
@@ -103,6 +115,7 @@ const CandidateTestSection = ({formSectionKey, handleDeleteForm}) => {
                     fieldOptions={[{label:"Yes", value:true}, {label:"No", value:false}]}
                     fieldClass="w-[250px] mx-5"
                     fieldChecked={{value:masterData.forms[formSectionKey].managedBy._isMcq}}
+                    onClick={"true"}
                     />
                     
                     
@@ -129,6 +142,7 @@ const CandidateTestSection = ({formSectionKey, handleDeleteForm}) => {
                 // allowDebounce={true}
             />
 
+            <TabContext.Provider value={{allTechnologyObj, setAllTechnologyObj}}>
             {
                 masterData.forms[formSectionKey].testName &&   
                 <TabSwitch
@@ -139,6 +153,7 @@ const CandidateTestSection = ({formSectionKey, handleDeleteForm}) => {
                     ]}
                 />
             }
+            </TabContext.Provider>
 
 
 
@@ -146,4 +161,4 @@ const CandidateTestSection = ({formSectionKey, handleDeleteForm}) => {
     );
 };
 
-export default CandidateTestSection;
+export default memo(CandidateTestSection);

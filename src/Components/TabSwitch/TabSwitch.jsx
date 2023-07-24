@@ -1,6 +1,6 @@
 import FormContext from '../../context/FormContext';
 import Button from '../Button/Button';
-import { useContext } from 'react';
+import { memo, useContext } from 'react';
 import React, { useState } from 'react'
 
 const TabSwitch = ({formSectionData, tabs}) => {
@@ -9,6 +9,7 @@ const TabSwitch = ({formSectionData, tabs}) => {
     const [currentTab, setCurrentTab] = useState(tabs[0]);
 
     if(formSectionData.managedBy.testName || !formSectionData.totalQuestions || formSectionData.totalQuestions <= 0 || !formSectionData.testType || !formSectionData.managedBy.name || !formSectionData.screeningType) return;
+
 
   return (
 
@@ -36,4 +37,4 @@ const TabSwitch = ({formSectionData, tabs}) => {
   )
 }
 
-export default TabSwitch
+export default memo(TabSwitch)

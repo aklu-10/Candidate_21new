@@ -101,7 +101,7 @@ const Input = ({fieldLabel, fieldType, fieldPlaceHolder, fieldPattern, fieldErro
         
         {
 
-            <input className='w-[100%] border p-2 rounded mb-2 text-[rgba(255,255,255,.9)] border-none bg-[#0e102c] shadow-[-1px_-1px_5px_black,1px_1px_1px_rgba(255,255,255,.2)] focus:outline-none hover:shadow-[1px_1px_5px_black]' id={fieldName} type={fieldType} placeholder={fieldPlaceHolder} value={allowDebounce ? undefined : value} onChange={ onChange ?? allowDebounce ? debouncedInputData : handleInputChange } />
+            <input className='w-[100%] border p-2 rounded mb-2 text-[rgba(255,255,255,.9)] border-none bg-[#0e102c] shadow-[-1px_-1px_5px_black,1px_1px_1px_rgba(255,255,255,.2)] focus:outline-none hover:shadow-[1px_1px_5px_black]' id={fieldName} type={fieldType} placeholder={fieldPlaceHolder} value={allowDebounce ? undefined : value} onChange={ (e)=> {onChange && onChange(e, setValue) || allowDebounce ? debouncedInputData(e) : handleInputChange(e) }} />
 
         }
 
