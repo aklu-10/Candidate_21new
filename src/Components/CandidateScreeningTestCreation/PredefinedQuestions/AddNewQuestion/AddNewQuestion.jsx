@@ -59,7 +59,7 @@ const AddNewQuestion = ({setShowAddNewForm, testTypeOptions}) => {
             correct_answer: correctAns[0]
             }
 
-        axios.post("http://localhost:3000/"+tech, base)
+        axios.post("http://localhost:8080/"+tech, base)
         .then(console.log)
         .catch(console.log)
             

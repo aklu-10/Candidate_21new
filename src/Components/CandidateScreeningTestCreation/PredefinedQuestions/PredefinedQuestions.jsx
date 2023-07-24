@@ -56,7 +56,7 @@
         let apiArr = [];
 
         techArr.map((tech) =>
-            apiArr.push(axios.get("http://localhost:3000/" + tech))
+            apiArr.push(axios.get("http://localhost:8080/" + tech))
         );
 
         Promise.all(apiArr)
