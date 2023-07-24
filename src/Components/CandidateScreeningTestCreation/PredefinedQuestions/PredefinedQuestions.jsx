@@ -20,7 +20,7 @@
     ];
 
     const PredefinedQuestions = ({ formSectionKey }) => {
-    const { masterData, setMasterData } = useContext(FormContext);
+    const { masterData, setMasterData, setIsFormValid } = useContext(FormContext);
 
     const [showAddNewForm, setShowAddNewForm] = useState(false);
 
@@ -87,49 +87,76 @@
         setShowAddNewForm(true);
     }
 
-    function setSelectedQuestion({ id }) {
-        let allSelectedVal =
-        masterData.forms[formSectionKey].predefinedQuestions.selectedQuestion;
+    function setSelectedQuestion(val) {
+        
+        if(Array.isArray(val))
+        {
+            if(val.length !== Number(masterData.forms[formSectionKey].predefinedQuestions.totalQuestions))
+            {
+                setIsFormValid(false);
+            }
+            else{
+                setIsFormValid(true);
+            }
 
-        if (allSelectedVal.includes(id)) {
-        allSelectedVal = [
-            ...masterData.forms[formSectionKey].predefinedQuestions
-            .selectedQuestion,
-        ];
-        let ind = allSelectedVal.indexOf(id);
-        allSelectedVal.splice(ind, 1);
-        setMasterData((prev) => ({
-            ...prev,
-            forms: {
-            ...prev.forms,
-            [formSectionKey]: {
-                ...prev.forms[formSectionKey],
-                predefinedQuestions: {
-                ...prev.forms[formSectionKey].predefinedQuestions,
-                selectedQuestion: allSelectedVal,
-                },
-            },
-            },
-        }));
-        } else {
-        setMasterData((prev) => ({
-            ...prev,
-            forms: {
-            ...prev.forms,
-            [formSectionKey]: {
-                ...prev.forms[formSectionKey],
-                predefinedQuestions: {
-                ...prev.forms[formSectionKey].predefinedQuestions,
-                selectedQuestion: [
-                    ...prev.forms[formSectionKey].predefinedQuestions
-                    .selectedQuestion,
-                    id,
-                ],
-                },
-            },
-            },
-        }));
+
         }
+        else
+        {
+
+            let allSelectedVal =
+            [...masterData.forms[formSectionKey].predefinedQuestions.selectedQuestion, val.id];
+
+            if(allSelectedVal.length !== Number(masterData.forms[formSectionKey].predefinedQuestions.totalQuestions))
+            {
+                setIsFormValid(false);
+            }
+            else{
+                setIsFormValid(true);
+            }
+
+            if (allSelectedVal.includes(val.id))
+            {
+            allSelectedVal = [
+                ...masterData.forms[formSectionKey].predefinedQuestions
+                .selectedQuestion,
+            ];
+            let ind = allSelectedVal.indexOf(val.id);
+            allSelectedVal.splice(ind, 1);
+            setMasterData((prev) => ({
+                ...prev,
+                forms: {
+                ...prev.forms,
+                [formSectionKey]: {
+                    ...prev.forms[formSectionKey],
+                    predefinedQuestions: {
+                    ...prev.forms[formSectionKey].predefinedQuestions,
+                    selectedQuestion: allSelectedVal,
+                    },
+                },
+                },
+            }));
+            } else {
+            setMasterData((prev) => ({
+                ...prev,
+                forms: {
+                ...prev.forms,
+                [formSectionKey]: {
+                    ...prev.forms[formSectionKey],
+                    predefinedQuestions: {
+                    ...prev.forms[formSectionKey].predefinedQuestions,
+                    selectedQuestion: [
+                        ...prev.forms[formSectionKey].predefinedQuestions
+                        .selectedQuestion,
+                        val.id,
+                    ],
+                    },
+                },
+                },
+            }));
+            }
+        }
+
     }
 
     function showError(msg)
@@ -216,18 +243,26 @@
                     color:'white',
                     borderColor: 'primary.light',
                     '& .MuiDataGrid-cell:hover': {
-                    color: 'primary.main',
+                    color: 'primary',
                     },
                     '& .MuiToolbar-root': {
                         color: 'white',
                     }, 
                     '& .MuiSvgIcon-root':{
                         color: 'white'
+                    },
+                    '& .MuiDataGrid-overlay':{
+                        background: 'white',
+                        color: 'black'
+                    }, 
+                    '& .css-yrdy0g-MuiDataGrid-columnHeaderRow':{
+                        background:'black'
                     }
                 }}
                 pageSizeOptions={[5, 10]}
                 checkboxSelection
                 onCellClick={setSelectedQuestion}
+                onRowSelectionModelChange={setSelectedQuestion}
                 />
             </div>
 
