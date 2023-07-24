@@ -27,8 +27,6 @@ const CandidateTestSection = ({formSectionKey, handleDeleteForm}) => {
             { label: 'screening', value: 'screening' }
         ]
 
-    console.log("Candidate Section")
-
     function handleAddNewFormSection()
     {
         setMasterData((prev)=>({...prev, forms:{ ...prev.forms, ["form"+(formIndex.current+1)] : {...candidateTestSectionBaseData}}}))

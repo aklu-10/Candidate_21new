@@ -238,10 +238,10 @@
                     },
                 }}
                 sx={{
-                    boxShadow: 2,
+                    boxShadow: 4,
                     border: 2,
                     color:'white',
-                    borderColor: 'primary.light',
+                    borderColor: '#151a4c',
                     '& .MuiDataGrid-cell:hover': {
                     color: 'primary',
                     },
@@ -256,7 +256,7 @@
                         color: 'black'
                     }, 
                     '& .css-yrdy0g-MuiDataGrid-columnHeaderRow':{
-                        background:'black'
+                        background:'#151a4c'
                     }
                 }}
                 pageSizeOptions={[5, 10]}

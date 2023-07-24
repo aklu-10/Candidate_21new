@@ -9,7 +9,6 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const CandidateScreeningTestCreation = () => {
 
-    console.log("Candidate Parent")
 
     const formIndex = useRef(1);
     const [loader, setLoader] = useState(false);
@@ -30,8 +29,6 @@ const CandidateScreeningTestCreation = () => {
     function handleSubmit(e)
     {
         e.preventDefault();
-
-        console.log(masterData)
 
         if(isFormValid)
         {
@@ -54,7 +51,6 @@ const CandidateScreeningTestCreation = () => {
                             no_of_random_question: masterData.forms[form].randomQuestions.totalQuestions,
                             technologies:
                                 Object.keys(masterData.forms[form].randomQuestions.technology).map((tech)=>{
-                                        console.log(tech)
                                         return {
                                             technology_key: masterData.forms[form].randomQuestions.technology[tech].name,
                                             question_type_details:{
@@ -68,7 +64,6 @@ const CandidateScreeningTestCreation = () => {
 
                 })
 
-            console.log(result);
         }
     }
 

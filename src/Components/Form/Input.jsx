@@ -9,10 +9,8 @@ const Input = ({fieldLabel, fieldType, fieldPlaceHolder, fieldPattern, fieldErro
     const [value, setValue] = useState(fieldValue);
     const {masterData, setMasterData, setIsFormValid } = useContext(FormContext);
 
-    // handle input change function
     function handleInputChange(e)
     {
-        // if(fieldName.includes("random"))
         let keys = fieldName.split(".");
 
         if(fieldName.includes("randomQuestions.totalQuestions") || fieldName.includes("predefinedQuestions.totalQuestions"))
@@ -78,13 +76,6 @@ const Input = ({fieldLabel, fieldType, fieldPlaceHolder, fieldPattern, fieldErro
             },delay)
         }
     }
-
-    // function changeWithSetter(e)
-    // {
-    //     // console.log(fieldValue)
-    //     // console.log(fieldName, e.target.value)
-    //     stateSetter((prev)=>({...prev, options:{...prev.options, [fieldName] : { ...prev.options[fieldName], value: e.target.value }}}))
-    // }
 
     let debouncedInputData = debounceInput( onChange ?? handleInputChange , 500)
 

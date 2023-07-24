@@ -46,7 +46,6 @@ const AddNewQuestion = ({setShowAddNewForm, testTypeOptions}) => {
 
         toast.success("Question successfully created");
         setShowAddNewForm(false)
-        console.log(addNewQuestionData);
 
         let tech = addNewQuestionData.technology;
 
@@ -81,7 +80,6 @@ const AddNewQuestion = ({setShowAddNewForm, testTypeOptions}) => {
             return;
         }
 
-        console.log(addNewQuestionData);
         setShowAddNewForm(false)
         setTimeout(()=>
         {
@@ -193,7 +191,6 @@ const AddNewQuestion = ({setShowAddNewForm, testTypeOptions}) => {
                             Object.keys(addNewQuestionData.options).map((option, index)=>(
                                 
                                 <div key={index} className='flex items-center justify-between'>
-                                    {console.log("option",addNewQuestionData.options[option])}
                                     <Field
                                         control="input"
                                         fieldName={option}

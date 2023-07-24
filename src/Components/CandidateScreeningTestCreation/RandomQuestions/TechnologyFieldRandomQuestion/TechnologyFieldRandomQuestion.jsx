@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react'
 import ParticularTechnologyRandomQuestion from '../TechnologyFieldRandomQuestion/ParticularTechnologyRandomQuestion';
 import FormContext from '../../../../context/FormContext';
 import { TabContext } from '../../CandidateTestSection';
+import { toast } from 'react-toastify';
 
 const TechnologyFieldRandomQuestion = ({formSectionKey}) => {
 
@@ -21,9 +22,10 @@ const TechnologyFieldRandomQuestion = ({formSectionKey}) => {
 
     function handleAddNewTechField()
     {
-        if(Object.keys(allTechnologyObj).length != testTypeOptions2.length){
+        if(Object.keys(allTechnologyObj).length != testTypeOptions2.length)
+        {
 
-            let index = Object.keys(allTechnologyObj).length
+            let index = Number(Object.keys(allTechnologyObj).slice(-1)[0].slice(-1))
             let nextFilteredArr = allTechnologyObj["technology"+index].technologies.filter(tech=>tech.value!==allTechnologyObj["technology"+index].selected.value);
             let baseData = {
                 ["technology"+(index+1)]:{

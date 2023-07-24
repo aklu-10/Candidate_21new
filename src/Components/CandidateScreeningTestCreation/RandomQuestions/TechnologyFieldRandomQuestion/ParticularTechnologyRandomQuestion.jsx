@@ -7,7 +7,6 @@ const ParticularTechnologyRandomQuestion = ({options, formSectionKey, handleAddN
 
     const {masterData, setMasterData, setIsFormValid} = useContext(FormContext);
 
-    console.log(options)
 
     useEffect(()=>
     {
@@ -116,7 +115,6 @@ const ParticularTechnologyRandomQuestion = ({options, formSectionKey, handleAddN
                                  
                                     return Object.keys(masterData.forms[formSectionKey].randomQuestions.technology[techName]).map(key=>{
 
-                                        console.log(techName, key, name)
                                         if(key === "programming" && techName === name){
                                             return Number(e.target.value)
                                         }
@@ -129,7 +127,6 @@ const ParticularTechnologyRandomQuestion = ({options, formSectionKey, handleAddN
                                 let combinedArr=[];
                                 allValues.map(value=>(combinedArr = [...combinedArr, ...value]))
 
-                                console.log(allValues)
 
                                 if(combinedArr.reduce((acc, item)=>Number(acc)+Number(item)) !== Number(masterData.forms[formSectionKey].randomQuestions.totalQuestions))
                                 {
@@ -183,12 +180,10 @@ const ParticularTechnologyRandomQuestion = ({options, formSectionKey, handleAddN
                         
                     }))
 
-                    console.log(allValues)
 
                     let combinedArr=[];
                     allValues.map(value=>(combinedArr = [...combinedArr, ...value]))
 
-                    console.log(combinedArr.reduce((acc, item)=>Number(acc)+Number(item)));
 
                     if((combinedArr.reduce((acc, item)=>Number(acc)+Number(item))) !== Number(masterData.forms[formSectionKey].randomQuestions.totalQuestions))
                     {
@@ -237,7 +232,6 @@ const ParticularTechnologyRandomQuestion = ({options, formSectionKey, handleAddN
                         toast.error("Total must equal to provided random questions")
                         setIsFormValid(false)
                     }
-                    // console.log(Number(masterData.forms[formSectionKey].randomQuestions.technology[name]?.mcq))
 
 
                     }}
@@ -283,7 +277,6 @@ const ParticularTechnologyRandomQuestion = ({options, formSectionKey, handleAddN
                             
                             let operationalKeys = Object.keys(obj).filter(key=>!removeKeys.includes(key))
                             
-                            console.log(removeKeys, operationalKeys)
     
                             let first;
                             if(removeKeys.length)

@@ -5,7 +5,6 @@ import React, { useState } from 'react'
 
 const TabSwitch = ({formSectionData, tabs}) => {
 
-    const {masterData, setMasterData} = useContext(FormContext);
     const [currentTab, setCurrentTab] = useState(tabs[0]);
 
     if(formSectionData.managedBy.testName || !formSectionData.totalQuestions || formSectionData.totalQuestions <= 0 || !formSectionData.testType || !formSectionData.managedBy.name || !formSectionData.screeningType) return;
