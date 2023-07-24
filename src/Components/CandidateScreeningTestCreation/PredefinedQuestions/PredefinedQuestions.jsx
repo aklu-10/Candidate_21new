@@ -210,6 +210,18 @@
                     paginationModel: { page: 0, pageSize: 5 },
                     },
                 }}
+                sx={{
+                    boxShadow: 2,
+                    border: 2,
+                    color:'white',
+                    borderColor: 'primary.light',
+                    '& .MuiDataGrid-cell:hover': {
+                      color: 'primary.main',
+                    },
+                    '& .MuiToolbar-root': {
+                        color: 'white',
+                      },                    
+                }}
                 pageSizeOptions={[5, 10]}
                 checkboxSelection
                 onCellClick={setSelectedQuestion}
