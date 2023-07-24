@@ -63,7 +63,7 @@ const CandidateScreeningTestCreation = () => {
                             }}
 
                 })
-
+                console.log(result)
         }
     }
 
