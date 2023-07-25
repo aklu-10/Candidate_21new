@@ -54,9 +54,9 @@ const CandidateScreeningTestCreation = () => {
                                         return {
                                             technology_key: masterData.forms[form].randomQuestions.technology[tech].name,
                                             question_type_details:{
-                                                mcq:masterData.forms[form].randomQuestions.technology[tech].mcq ?? 0,
-                                                programming: masterData.forms[form].randomQuestions.technology[tech].programming ?? 0,
-                                                descriptive: masterData.forms[form].randomQuestions.technology[tech].descriptive ?? 0
+                                                mcq:Number(masterData.forms[form].randomQuestions.technology[tech].mcq) ?? 0,
+                                                programming: Number(masterData.forms[form].randomQuestions.technology[tech].programming) ?? 0,
+                                                descriptive: Number(masterData.forms[form].randomQuestions.technology[tech].descriptive) ?? 0
                                             }
                                         }
                                 })

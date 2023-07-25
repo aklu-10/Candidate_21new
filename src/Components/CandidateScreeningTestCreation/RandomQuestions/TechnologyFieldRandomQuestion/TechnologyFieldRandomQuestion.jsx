@@ -8,7 +8,6 @@ const TechnologyFieldRandomQuestion = ({formSectionKey}) => {
 
     const {masterData, setMasterData, setIsFormValid} = useContext(FormContext);
 
-
     let testTypeOptions2 = [
         { label: 'Python', value: 'Python' },
         { label: 'Java', value: 'Java' },
@@ -17,7 +16,6 @@ const TechnologyFieldRandomQuestion = ({formSectionKey}) => {
     ]
     
     const {allTechnologyObj, setAllTechnologyObj} = useContext(TabContext)
-
 
     const [loader, setLoader] = useState(false);
 
@@ -41,7 +39,6 @@ const TechnologyFieldRandomQuestion = ({formSectionKey}) => {
 
     function handleDeleteSpecificField(obj,fieldName)
     {   
-
         setLoader(true);
 
         let deleteSelect = obj[fieldName];
@@ -54,8 +51,6 @@ const TechnologyFieldRandomQuestion = ({formSectionKey}) => {
                 upperKeys.push(i)
                 res={...res,[i]:{...obj[i]}}
         }
-
-
 
         let lowerKeys = Object.keys(obj).filter(key=>!upperKeys.includes(key)).slice(1,)
         
@@ -72,7 +67,15 @@ const TechnologyFieldRandomQuestion = ({formSectionKey}) => {
         
         let copyData= {...masterData}
 
-        delete masterData.forms[formSectionKey].randomQuestions.technology[fieldName]
+        Object.keys(copyData.forms[formSectionKey].randomQuestions.technology).map(techName=>
+            {
+            if(fieldName === techName){
+                delete copyData.forms[formSectionKey].randomQuestions.technology[techName]
+            }
+            else{
+                copyData.forms[formSectionKey].randomQuestions.technology[techName].name = res[techName].selected.value
+            }
+        })
 
         setMasterData(copyData)
 
@@ -92,9 +95,7 @@ const TechnologyFieldRandomQuestion = ({formSectionKey}) => {
             setIsFormValid(false)
         }
 
-        // console.log(res);
-
-        setTimeout(()=>setLoader(false),500);
+        setTimeout(()=>setLoader(false),10);
 
     }
 

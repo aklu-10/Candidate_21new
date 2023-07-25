@@ -140,7 +140,7 @@ const AddNewQuestion = ({setShowAddNewForm, testTypeOptions}) => {
             setTimeout(()=>
             {
                 setLoader(false)
-            },5)
+            },200)
         }
     }
 
@@ -207,7 +207,7 @@ const AddNewQuestion = ({setShowAddNewForm, testTypeOptions}) => {
                     <div>
 
                         {
-                            loader ? <p>Loading...</p> :
+                            loader ? <p style={{color:'white'}}>Loading...</p> :
                             Object.keys(addNewQuestionData.options).map((option, index)=>(
                                 
                                 <div key={index} className='flex items-center justify-between'>
