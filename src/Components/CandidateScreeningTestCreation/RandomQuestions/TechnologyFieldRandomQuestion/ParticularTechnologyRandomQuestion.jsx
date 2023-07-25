@@ -3,7 +3,7 @@ import Field from "../../../Form/Field";
 import FormContext from "../../../../context/FormContext";
 import { toast } from "react-toastify";
 
-const ParticularTechnologyRandomQuestion = ({options, formSectionKey, handleAddNewTechField, name, allTechnologyObj, initialData, setAllTechnologyObj, index, handleDeleteSpecificField, setLoader}) => {
+const ParticularTechnologyRandomQuestion = ({options, formSectionKey, handleAddNewTechField, name, allTechnologyObj, initialData, setAllTechnologyObj, index, handleDeleteSpecificField, loader}) => {
 
     const {masterData, setMasterData, setIsFormValid} = useContext(FormContext);
 
@@ -14,6 +14,11 @@ const ParticularTechnologyRandomQuestion = ({options, formSectionKey, handleAddN
 
     },[])
 
+
+    const handleDeleteTechnology = (obj , techName) => 
+    {
+        handleDeleteSpecificField(obj, techName);
+    }
 
     function conditionalQuestionTotalRender(Mname, isMcq)
     {
@@ -243,7 +248,10 @@ const ParticularTechnologyRandomQuestion = ({options, formSectionKey, handleAddN
 
     return (
         <div>
-            <div className="flex items-center">
+
+            {
+                loader === true ? <p>loading...</p> : 
+                <div className="flex items-center">
                 <Field
                 control="select"
                 fieldName={`${formSectionKey}.randomQuestions.technology`}
@@ -343,13 +351,15 @@ const ParticularTechnologyRandomQuestion = ({options, formSectionKey, handleAddN
                     index!=0 &&
                   
                     <span className="text-white bg-[#262c77] flex items-center justify-center text-xl mt-[40px] rounded-md ml-[20px] w-[30px] h-[30px] cursor-pointer shadow-[1px_1px_2px_black,-1px_-1px_2px_rgba(255,255,255,.2)]"
-                    onClick={()=>handleDeleteSpecificField(allTechnologyObj, name)}
+                    onClick={()=>handleDeleteTechnology(allTechnologyObj, name)}
                     >
                     -
                     </span>
                 }
             </div>
 
+            }
+        
             <div className="flex flex-wrap justify-between">
                 {conditionalQuestionTotalRender(
                 masterData.forms[formSectionKey].managedBy.name,

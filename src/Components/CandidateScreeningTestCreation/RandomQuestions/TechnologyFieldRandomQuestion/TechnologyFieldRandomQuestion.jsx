@@ -8,6 +8,7 @@ const TechnologyFieldRandomQuestion = ({formSectionKey}) => {
 
     const {masterData, setMasterData, setIsFormValid} = useContext(FormContext);
 
+
     let testTypeOptions2 = [
         { label: 'Python', value: 'Python' },
         { label: 'Java', value: 'Java' },
@@ -40,6 +41,8 @@ const TechnologyFieldRandomQuestion = ({formSectionKey}) => {
 
     function handleDeleteSpecificField(obj,fieldName)
     {   
+
+        setLoader(true);
 
         let deleteSelect = obj[fieldName];
         let upperKeys=[];
@@ -89,6 +92,9 @@ const TechnologyFieldRandomQuestion = ({formSectionKey}) => {
             setIsFormValid(false)
         }
 
+        // console.log(res);
+
+        setTimeout(()=>setLoader(false),500);
 
     }
 
@@ -97,9 +103,8 @@ const TechnologyFieldRandomQuestion = ({formSectionKey}) => {
         <div>
 
             {
-                !loader &&
                 Object.keys(allTechnologyObj).map((technology, index)=>(
-                    <ParticularTechnologyRandomQuestion key={index} index={index} options={allTechnologyObj[technology].technologies} formSectionKey={formSectionKey} handleAddNewTechField={handleAddNewTechField} name={technology} allTechnologyObj={allTechnologyObj} initialData={testTypeOptions2} setAllTechnologyObj={setAllTechnologyObj} handleDeleteSpecificField={handleDeleteSpecificField} setLoader={setLoader}/>
+                    <ParticularTechnologyRandomQuestion key={index} index={index} options={allTechnologyObj[technology].technologies} formSectionKey={formSectionKey} handleAddNewTechField={handleAddNewTechField} name={technology} allTechnologyObj={allTechnologyObj} initialData={testTypeOptions2} setAllTechnologyObj={setAllTechnologyObj} handleDeleteSpecificField={handleDeleteSpecificField} loader={loader}/>
                 ))
             }
 

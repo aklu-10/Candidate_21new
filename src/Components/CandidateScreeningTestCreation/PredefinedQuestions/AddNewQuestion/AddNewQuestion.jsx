@@ -38,11 +38,11 @@ const AddNewQuestion = ({setShowAddNewForm, testTypeOptions}) => {
             toast.error("Please provide the required fields")
             return;
         }
-        else if(!Object.keys(addNewQuestionData.options).filter(option=>addNewQuestionData.options[option].isCorrect).length)
-        {
-            toast.error("Please provide the required fields")
-            return;
-        }
+        // else if(!Object.keys(addNewQuestionData.options).filter(option=>addNewQuestionData.options[option].isCorrect).length)
+        // {
+        //     toast.error("Please provide the required fields")
+        //     return;
+        // }
 
         toast.success("Question successfully created");
         setShowAddNewForm(false)
