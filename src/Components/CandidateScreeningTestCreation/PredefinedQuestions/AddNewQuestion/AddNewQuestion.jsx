@@ -74,11 +74,31 @@ const AddNewQuestion = ({setShowAddNewForm, testTypeOptions}) => {
             toast.error("Please provide the required fields")
             return;
         }
-        else if(!Object.keys(addNewQuestionData.options).filter(option=>addNewQuestionData.options[option].isCorrect).length)
-        {
-            toast.error("Please provide the required fields")
-            return;
-        }
+        // else if(!Object.keys(addNewQuestionData.options).filter(option=>addNewQuestionData.options[option].isCorrect).length)
+        // {
+        //     toast.error("Please provide the required fields")
+        //     return;
+        // }
+
+        toast.success("Question successfully created");
+        setShowAddNewForm(false)
+
+        let tech = addNewQuestionData.technology;
+
+        let correctAns = Object.keys(addNewQuestionData.options).filter(option=>(
+            addNewQuestionData.options[option]._isCorrect=true
+        ))
+
+        let base = {
+            question: addNewQuestionData.questionTitle,
+            option: addNewQuestionData.options,
+            correct_answer: correctAns[0]
+            }
+
+        axios.post("http://localhost:8080/"+tech, base)
+        .then(console.log)
+        .catch(console.log)
+            
 
         setShowAddNewForm(false)
         setTimeout(()=>
