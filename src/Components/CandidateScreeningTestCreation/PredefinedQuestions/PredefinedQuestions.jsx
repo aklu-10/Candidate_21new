@@ -182,7 +182,7 @@
         <div className="relative">
         
         {
-            (masterData.forms[formSectionKey].randomQuestions.totalQuestions >= masterData.forms[formSectionKey].totalQuestions) || (masterData.forms[formSectionKey].randomQuestions.totalQuestions !== masterData.forms[formSectionKey].totalQuestions) &&
+            (Number(masterData.forms[formSectionKey].randomQuestions.totalQuestions) < Number(masterData.forms[formSectionKey].totalQuestions)) &&
             <Field
             control="input"
             fieldName={`${formSectionKey}.predefinedQuestions.totalQuestions`}
