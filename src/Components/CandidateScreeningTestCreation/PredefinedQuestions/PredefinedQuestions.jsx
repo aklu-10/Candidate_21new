@@ -93,7 +93,6 @@
                 id: index,
                 title: question.question,
                 level: 1,
-                technology: "Technology",
                 questionType:question?.questionType ?? "Mcq",
                 technology:question?.technology ?? "Technology"
             }));
