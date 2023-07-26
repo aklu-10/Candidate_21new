@@ -225,6 +225,68 @@
       },
       "correct_answer": "option1",
       "id": 23
+    },
+    {
+      "question": "What is def",
+      "option": {
+        "option1": {
+          "value": "",
+          "isCorrect": false,
+          "_isCorrect": true
+        }
+      },
+      "correct_answer": "option1",
+      "id": 24
+    },
+    {
+      "question": "What is function?",
+      "option": {
+        "option1": {
+          "value": "",
+          "isCorrect": false,
+          "_isCorrect": true
+        }
+      },
+      "correct_answer": "option1",
+      "questionType": "Programming",
+      "id": 25
+    },
+    {
+      "question": "What is python?",
+      "option": {
+        "option1": {
+          "value": "A",
+          "isCorrect": true,
+          "_isCorrect": true
+        },
+        "option2": {
+          "value": "B",
+          "isCorrect": false,
+          "_isCorrect": true
+        }
+      },
+      "correct_answer": "option1",
+      "questionType": "Mcq",
+      "technology": "Python",
+      "id": 26
+    },
+    {
+      "question": "asdasd",
+      "option": {
+        "option1": {
+          "value": "adsas",
+          "isCorrect": true,
+          "_isCorrect": true
+        },
+        "option2": {
+          "value": "asdasd",
+          "isCorrect": false,
+          "_isCorrect": true
+        }
+      },
+      "correct_answer": "option1",
+      "questionType": "Mcq",
+      "id": 27
     }
   ],
   "react": [
@@ -621,6 +683,20 @@
       },
       "correct_answer": "option1",
       "id": 18
+    },
+    {
+      "question": "java",
+      "option": {
+        "option1": {
+          "value": "",
+          "isCorrect": false,
+          "_isCorrect": true
+        }
+      },
+      "correct_answer": "option1",
+      "questionType": "Descriptive",
+      "technology": "java",
+      "id": 19
     }
   ],
   "php": [

@@ -34,15 +34,23 @@ const AddNewQuestion = ({setShowAddNewForm, testTypeOptions, setRows, fetchTechQ
     function addNewQuestionOnBoard()
     {   
         
-        setTableLoader(true);
 
         if(!addNewQuestionData.technology || !addNewQuestionData.questionType || !addNewQuestionData.questionTitle)
         {
             toast.error("Please provide the required fields")
             return;
         }
+        if(addNewQuestionData.questionType === "Mcq")
+        {
+            if(Object.keys(addNewQuestionData.options).length<2)
+            {
+                toast.error("Please provide atleast 2 options")
+                return;
+            }
+        }
         toast.success("Question successfully created");
         setShowAddNewForm(false)
+        setTableLoader(true);
 
         let tech = addNewQuestionData.technology;
 
@@ -53,7 +61,9 @@ const AddNewQuestion = ({setShowAddNewForm, testTypeOptions, setRows, fetchTechQ
         let base = {
             question: addNewQuestionData.questionTitle,
             option: addNewQuestionData.options,
-            correct_answer: correctAns[0]
+            correct_answer: correctAns[0],
+            questionType:addNewQuestionData.questionType,
+            technology:addNewQuestionData.technology
             }
 
         axios.post("http://localhost:8080/"+tech, base)
@@ -70,27 +80,27 @@ const AddNewQuestion = ({setShowAddNewForm, testTypeOptions, setRows, fetchTechQ
         })
             
 
-
-
     }
 
     function saveAndNewQuestionOnBoard()
     {
 
-        setTableLoader(true)
         if(!addNewQuestionData.technology || !addNewQuestionData.questionType || !addNewQuestionData.questionTitle)
         {
             toast.error("Please provide the required fields")
             return;
         }
-        // else if(!Object.keys(addNewQuestionData.options).filter(option=>addNewQuestionData.options[option].isCorrect).length)
-        // {
-        //     toast.error("Please provide the required fields")
-        //     return;
-        // }
-
+        if(addNewQuestionData.questionType === "Mcq")
+        {
+            if(Object.keys(addNewQuestionData.options).length<2)
+            {
+                toast.error("Please provide atleast 2 options")
+                return;
+            }
+        }
         toast.success("Question successfully created");
         setShowAddNewForm(false)
+        setTableLoader(true)
 
         let tech = addNewQuestionData.technology;
 
@@ -101,7 +111,8 @@ const AddNewQuestion = ({setShowAddNewForm, testTypeOptions, setRows, fetchTechQ
         let base = {
             question: addNewQuestionData.questionTitle,
             option: addNewQuestionData.options,
-            correct_answer: correctAns[0]
+            correct_answer: correctAns[0],
+            questionType:addNewQuestionData.questionType
             }
 
         axios.post("http://localhost:8080/"+tech, base)

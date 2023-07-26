@@ -46,7 +46,6 @@
 
     function fetchTechQueryBaseData(tableFeeder) {
 
-        setTableLoader(true)
         setIsFormValid(false);
 
         let techArr = masterData.forms[
@@ -67,14 +66,36 @@
 
         Promise.all(apiArr)
             .then((res) => {
+                setTableLoader(true)
             let result = [];
+
             res.map(({ data }) => (result = [...result, ...data]));
+
+            let questionTypeArr = [];
+            questionTypeArr = quesArr.map(quesType=>quesType.value)
+
+            if(questionTypeArr.includes("mcq"))
+            {
+                result = result.filter(question=>(
+                    questionTypeArr.includes(question?.questionType?.toLowerCase() ?? "mcq")
+                ))
+            }
+            else
+            {
+                result = result.filter(question=>(
+                    (question.questionType) &&
+                    questionTypeArr.includes(question.questionType.toLowerCase())
+                ))
+            }
+
 
             let allData = result.map((question, index) => ({
                 id: index,
                 title: question.question,
                 level: 1,
                 technology: "Technology",
+                questionType:question?.questionType ?? "Mcq",
+                technology:question?.technology ?? "Technology"
             }));
 
             
