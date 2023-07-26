@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import ParticularTechnologyRandomQuestion from '../TechnologyFieldRandomQuestion/ParticularTechnologyRandomQuestion';
 import FormContext from '../../../../context/FormContext';
 import { TabContext } from '../../CandidateTestSection';
@@ -98,6 +98,8 @@ const TechnologyFieldRandomQuestion = ({formSectionKey}) => {
         setTimeout(()=>setLoader(false),10);
 
     }
+
+
 
     return (
         

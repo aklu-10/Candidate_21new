@@ -45,11 +45,11 @@ const SelectLib = ({fieldValue, fieldLabel, fieldPlaceHolder, fieldOptions, fiel
             
             ?
                 <CreatableSelect ref={innerRef}
-                isMulti options={fieldOptions} placeholder={fieldPlaceHolder} onChange={handleMultiSelectChange}/>
+                isMulti options={fieldOptions} value={fieldValue} placeholder={fieldPlaceHolder} onChange={handleMultiSelectChange}/>
             
             :
 
-            <CreatableSelect isClearable options={fieldOptions} placeholder={fieldPlaceHolder} onChange={handleSelectChange}/>
+            <CreatableSelect isClearable options={fieldOptions} value={fieldValue} placeholder={fieldPlaceHolder} onChange={handleSelectChange}/>
         }
         </div>
     )

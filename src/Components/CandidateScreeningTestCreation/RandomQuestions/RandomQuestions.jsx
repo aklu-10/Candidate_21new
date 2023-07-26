@@ -1,7 +1,7 @@
 import TechnologyFieldRandomQuestion from '../RandomQuestions/TechnologyFieldRandomQuestion/TechnologyFieldRandomQuestion'
 import Field from '../../Form/Field';
 import FormContext from '../../../context/FormContext';
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { memo } from 'react'
 
 const RandomQuestions = ({formSectionKey}) => {

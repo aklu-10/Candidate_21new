@@ -1,12 +1,12 @@
-    import React, { memo, useRef, useState } from "react";
     import Field from '../../Form/Field';
     import FormContext from '../../../context/FormContext';
     import Button from '../../Button/Button'
-    import { DataGrid } from "@mui/x-data-grid";
-    import { useContext } from "react";
     import AddNewQuestion from '../PredefinedQuestions/AddNewQuestion/AddNewQuestion';
+    import { DataGrid } from "@mui/x-data-grid";
+    import React, { memo, useRef, useState, useContext } from "react";
     import { toast } from "react-toastify";
     import axios from "axios";
+import { TabContext } from '../CandidateTestSection';
 
     const columns = [
     { field: "title", headerName: "Question Title", width: 400 },
@@ -20,15 +20,14 @@
     ];
 
     const PredefinedQuestions = ({ formSectionKey }) => {
-    const { masterData, setMasterData, setIsFormValid } = useContext(FormContext);
+    
 
-    const [showAddNewForm, setShowAddNewForm] = useState(false);
+    const { masterData, setMasterData, setIsFormValid } = useContext(FormContext);
+    const {setRows, rows, setShowAddNewForm, showAddNewForm} = useContext(TabContext);
+
 
     let techSelectRef = useRef(null);
     let quesTypeSelectRef = useRef(null);
-
-    //table rows
-    const [rows, setRows] = useState([]);
 
     const [tableLoader, setTableLoader] = useState(false)
 
@@ -133,7 +132,6 @@
                 setIsFormValid(true);
             }
 
-
         }
         else
         {
@@ -230,6 +228,7 @@
                 fieldPlaceHolder="Technology"
                 fieldOptions={testTypeOptions}
                 fieldClass="w-[400px] z-10"
+                fieldValue={masterData.forms[formSectionKey].predefinedQuestions.technology}
                 />
 
                 <Field
@@ -240,6 +239,7 @@
                 fieldPlaceHolder="Question Type"
                 fieldOptions={testTypeOptions2}
                 fieldClass="w-[400px] z-[10]"
+                fieldValue={masterData.forms[formSectionKey].predefinedQuestions.questionType}
                 />
 
                 <Button
@@ -273,7 +273,7 @@
                 
                 <div className="h-[400px] my-5">
                     <DataGrid
-                    rows={rows}
+                    rows={rows ?? []}
                     columns={columns}
                     initialState={{
                         pagination: {

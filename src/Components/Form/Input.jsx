@@ -15,6 +15,8 @@ const Input = ({fieldLabel, fieldType, fieldPlaceHolder, fieldPattern, fieldErro
 
         if(fieldName.includes("randomQuestions.totalQuestions") || fieldName.includes("predefinedQuestions.totalQuestions"))
         {   
+
+
             if(Number(e.target.value) > Number(masterData.forms[keys[0]].totalQuestions))
                 toast.error("value exceeds")
 

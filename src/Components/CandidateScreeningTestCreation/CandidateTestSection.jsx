@@ -20,6 +20,9 @@ const CandidateTestSection = ({formSectionKey, handleDeleteForm}) => {
     const {masterData, setMasterData, formIndex} = useContext(FormContext);
 
     const [allTechnologyObj, setAllTechnologyObj] = useState({ technology1 : { technologies:[...testTypeOptions2], selected:testTypeOptions2[0] }});
+    
+    const [showAddNewForm, setShowAddNewForm] = useState(false);
+    const [rows, setRows] = useState([]);
 
 
     let testTypeOptions = [
@@ -140,7 +143,7 @@ const CandidateTestSection = ({formSectionKey, handleDeleteForm}) => {
                 // allowDebounce={true}
             />
 
-            <TabContext.Provider value={{allTechnologyObj, setAllTechnologyObj}}>
+            <TabContext.Provider value={{allTechnologyObj, setAllTechnologyObj, showAddNewForm, setShowAddNewForm, rows, setRows}}>
             {
                 masterData.forms[formSectionKey].testName &&   
                 <TabSwitch

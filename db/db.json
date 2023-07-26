@@ -864,6 +864,20 @@
         "$variable name as value;"
       ],
       "correct_answer": "$variable_name = value;"
+    },
+    {
+      "question": "Declare a variable in php.",
+      "option": {
+        "option1": {
+          "value": "",
+          "isCorrect": false,
+          "_isCorrect": true
+        }
+      },
+      "correct_answer": "option1",
+      "questionType": "Descriptive",
+      "technology": "php",
+      "id": 16
     }
   ]
 }

@@ -20,9 +20,6 @@ export const candidateTestSectionBaseData = {
         totalQuestions:'',
         questions:[],
         technology:[
-            { label: 'Python', value: 'Python' },
-            { label: 'java', value: 'java' },
-            { label: 'php', value: 'php' }
         ],
         questionType:[],
         selectedQuestion:[]

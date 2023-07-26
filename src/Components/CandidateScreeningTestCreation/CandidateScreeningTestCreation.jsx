@@ -95,7 +95,6 @@ const CandidateScreeningTestCreation = () => {
 
             <FormContext.Provider value={{masterData, setMasterData, formIndex, setIsFormValid}}>
                 <div>
-                    
                     {
                         Object.keys(masterData.forms).map((formSectionKey, index)=>(
 
@@ -103,7 +102,6 @@ const CandidateScreeningTestCreation = () => {
                             <CandidateTestSection key={index} formSectionKey={formSectionKey} handleDeleteForm={handleDeleteForm}/>
                         ))
                     }
-
                     <div>
                         <Button
                             btnClass={
