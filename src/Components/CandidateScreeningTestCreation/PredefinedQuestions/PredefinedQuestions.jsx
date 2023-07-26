@@ -30,6 +30,8 @@
     //table rows
     const [rows, setRows] = useState([]);
 
+    const [tableLoader, setTableLoader] = useState(false)
+
     let testTypeOptions = [
         { label: "Python", value: "Python" },
         { label: "java", value: "java" },
@@ -42,7 +44,11 @@
         { label: "descriptive", value: "descriptive" },
     ];
 
-    function fetchTechQueryBaseData() {
+    function fetchTechQueryBaseData(tableFeeder) {
+
+        setTableLoader(true)
+        setIsFormValid(false);
+
         let techArr = masterData.forms[
         formSectionKey
         ].predefinedQuestions.technology.map((tech) => tech.value);
@@ -71,9 +77,17 @@
                 technology: "Technology",
             }));
 
-            setRows(allData.reverse());
+            
+            setTableLoader(false);
+            tableFeeder(allData.reverse());
+
+
             })
-            .catch(console.log);
+            .catch(err=>{
+
+                setTableLoader(false);
+                throw new Error(err.message);
+            });
         }
     }
 
@@ -210,7 +224,7 @@
 
                 <Button
                 btnClass="rounded bg-blue-600 w-[80px] text-white p-2 mr-[2px] mt-[35px]"
-                onClick={fetchTechQueryBaseData}
+                onClick={()=>fetchTechQueryBaseData(setRows)}
                 >
                 Search
                 </Button>
@@ -228,48 +242,62 @@
                 </Button>
             </div>
 
-            <div className="h-[400px] my-5">
-                <DataGrid
-                rows={rows}
-                columns={columns}
-                initialState={{
-                    pagination: {
-                    paginationModel: { page: 0, pageSize: 5 },
-                    },
-                }}
-                sx={{
-                    boxShadow: 4,
-                    border: 2,
-                    color:'white',
-                    borderColor: '#151a4c',
-                    '& .MuiDataGrid-cell:hover': {
-                    color: 'primary',
-                    },
-                    '& .MuiToolbar-root': {
-                        color: 'white',
-                    }, 
-                    '& .MuiSvgIcon-root':{
-                        color: 'white'
-                    },
-                    '& .MuiDataGrid-overlay':{
-                        background: 'white',
-                        color: 'black'
-                    }, 
-                    '& .css-yrdy0g-MuiDataGrid-columnHeaderRow':{
-                        background:'#151a4c'
-                    }
-                }}
-                pageSizeOptions={[5, 10]}
-                checkboxSelection
-                onCellClick={setSelectedQuestion}
-                onRowSelectionModelChange={setSelectedQuestion}
-                />
-            </div>
+            {
+                tableLoader 
+                
+                ?
+                
+                <p className="h-[400px]">loading...</p> 
+                
+                :
+                
+                <div className="h-[400px] my-5">
+                    <DataGrid
+                    rows={rows}
+                    columns={columns}
+                    initialState={{
+                        pagination: {
+                        paginationModel: { page: 0, pageSize: 5 },
+                        },
+                    }}
+                    sx={{
+                        boxShadow: 4,
+                        border: 2,
+                        color:'white',
+                        borderColor: '#151a4c',
+                        '& .MuiDataGrid-cell:hover': {
+                        color: 'primary',
+                        },
+                        '& .MuiToolbar-root': {
+                            color: 'white',
+                        }, 
+                        '& .MuiSvgIcon-root':{
+                            color: 'white'
+                        },
+                        '& .MuiDataGrid-overlay':{
+                            background: 'white',
+                            color: 'black'
+                        }, 
+                        '& .css-yrdy0g-MuiDataGrid-columnHeaderRow':{
+                            background:'#151a4c'
+                        }
+                    }}
+                    pageSizeOptions={[5, 10]}
+                    checkboxSelection
+                    onCellClick={setSelectedQuestion}
+                    onRowSelectionModelChange={setSelectedQuestion}
+                    />
+                </div>
+
+            }
 
             {showAddNewForm && (
                 <AddNewQuestion
                 setShowAddNewForm={setShowAddNewForm}
                 testTypeOptions={testTypeOptions}
+                setRows={setRows}
+                fetchTechQueryBaseData={fetchTechQueryBaseData}
+                setTableLoader={setTableLoader}
                 />
             )}
             </>

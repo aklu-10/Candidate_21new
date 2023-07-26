@@ -1,11 +1,11 @@
-import React, { useRef, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import Field from '../../../Form/Field';
 import Label from '../../../Form/Label/Label'
 import Button from '../../../Button/Button';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 
-const AddNewQuestion = ({setShowAddNewForm, testTypeOptions}) => {
+const AddNewQuestion = ({setShowAddNewForm, testTypeOptions, setRows, fetchTechQueryBaseData, setTableLoader}) => {
 
     const [addNewQuestionData, setAddNewQuestionState] = useState({
         technology:'',
@@ -15,6 +15,7 @@ const AddNewQuestion = ({setShowAddNewForm, testTypeOptions}) => {
     });
 
     const [loader, setLoader] = useState(false);
+
 
     function handleAddNewInput(fieldName, e)
     {
@@ -33,17 +34,13 @@ const AddNewQuestion = ({setShowAddNewForm, testTypeOptions}) => {
     function addNewQuestionOnBoard()
     {   
         
+        setTableLoader(true);
+
         if(!addNewQuestionData.technology || !addNewQuestionData.questionType || !addNewQuestionData.questionTitle)
         {
             toast.error("Please provide the required fields")
             return;
         }
-        // else if(!Object.keys(addNewQuestionData.options).filter(option=>addNewQuestionData.options[option].isCorrect).length)
-        // {
-        //     toast.error("Please provide the required fields")
-        //     return;
-        // }
-
         toast.success("Question successfully created");
         setShowAddNewForm(false)
 
@@ -60,15 +57,27 @@ const AddNewQuestion = ({setShowAddNewForm, testTypeOptions}) => {
             }
 
         axios.post("http://localhost:8080/"+tech, base)
-        .then(console.log)
-        .catch(console.log)
+        .then(
+            ()=>{
             
+                setTableLoader(false)
+                fetchTechQueryBaseData(setRows);
+            }
+        )
+        .catch(err=>{
+            setTableLoader(false)
+            throw new Error(err.message);
+        })
+            
+
+
+
     }
 
     function saveAndNewQuestionOnBoard()
     {
 
-        
+        setTableLoader(true)
         if(!addNewQuestionData.technology || !addNewQuestionData.questionType || !addNewQuestionData.questionTitle)
         {
             toast.error("Please provide the required fields")
@@ -96,8 +105,15 @@ const AddNewQuestion = ({setShowAddNewForm, testTypeOptions}) => {
             }
 
         axios.post("http://localhost:8080/"+tech, base)
-        .then(console.log)
-        .catch(console.log)
+        .then( ()=>{
+            
+            fetchTechQueryBaseData(setRows);
+            setTableLoader(false)
+            
+        })
+        .catch(err=>{
+            setTableLoader(false);
+        })
             
 
         setShowAddNewForm(false)
