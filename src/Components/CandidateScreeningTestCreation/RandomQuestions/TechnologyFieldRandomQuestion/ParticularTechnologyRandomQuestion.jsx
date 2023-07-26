@@ -320,11 +320,7 @@ const ParticularTechnologyRandomQuestion = ({options, formSectionKey, handleAddN
 
 
             setMasterData((prev)=>({...prev, forms:{...prev.forms, [formSectionKey]: {...prev.forms[formSectionKey], randomQuestions: { ...prev.forms[formSectionKey].randomQuestions, technology: { ...prev.forms[formSectionKey].randomQuestions.technology ,[name]: { ...prev.forms[formSectionKey].randomQuestions.technology[name], name : e.target.value} }}}}}))
-            
-
         } 
-    
-
 
     return (
         <div>

@@ -113,6 +113,19 @@ import { TabContext } from '../CandidateTestSection';
     function handleClearFields() {
         techSelectRef.current.clearValue();
         quesTypeSelectRef.current.clearValue();
+        setMasterData((prev) => ({
+            ...prev,
+            forms: {
+            ...prev.forms,
+            [formSectionKey]: {
+                ...prev.forms[formSectionKey],
+                predefinedQuestions: {
+                ...prev.forms[formSectionKey].predefinedQuestions,
+                selectedQuestion: [],
+                },
+            },
+            },
+        }));
         setRows([]);
     }
 
@@ -121,7 +134,7 @@ import { TabContext } from '../CandidateTestSection';
     }
 
     function setSelectedQuestion(val) {
-        
+    
         if(Array.isArray(val))
         {
             if(val.length !== Number(masterData.forms[formSectionKey].predefinedQuestions.totalQuestions))
@@ -129,6 +142,19 @@ import { TabContext } from '../CandidateTestSection';
                 setIsFormValid(false);
             }
             else{
+                setMasterData((prev) => ({
+                    ...prev,
+                    forms: {
+                    ...prev.forms,
+                    [formSectionKey]: {
+                        ...prev.forms[formSectionKey],
+                        predefinedQuestions: {
+                        ...prev.forms[formSectionKey].predefinedQuestions,
+                        selectedQuestion: val,
+                        },
+                    },
+                    },
+                }));
                 setIsFormValid(true);
             }
 

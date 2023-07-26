@@ -25,7 +25,6 @@ const CandidateScreeningTestCreation = () => {
 
     // loader var=false, bool, setTimeout, loader component
 
-
     function handleSubmit(e)
     {
         e.preventDefault();
