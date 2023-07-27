@@ -79,21 +79,21 @@ const TechnologyFieldRandomQuestion = ({formSectionKey}) => {
 
         setMasterData(copyData)
 
-        let total = Object.keys(masterData.forms[formSectionKey].randomQuestions.technology).map(techName=>{
+        // let total = Object.keys(masterData.forms[formSectionKey].randomQuestions.technology).map(techName=>{
                     
-            if(techName === name)
-                return Number(e.target.value)
-            return Number(masterData.forms[formSectionKey].randomQuestions.technology[techName]?.mcq ?? 0)
-        })
+        //     if(techName === name)
+        //         return Number(e.target.value)
+        //     return Number(masterData.forms[formSectionKey].randomQuestions.technology[techName]?.mcq ?? 0)
+        // })
 
-        if((total.reduce((acc, item)=>acc+item)) === Number(masterData.forms[formSectionKey].randomQuestions.totalQuestions))
-        {
-            setIsFormValid(true)
-        }
-        else{
-            toast.error("Total must equal to provided random questions")
-            setIsFormValid(false)
-        }
+        // if((total.reduce((acc, item)=>acc+item)) === Number(masterData.forms[formSectionKey].randomQuestions.totalQuestions))
+        // {
+        //     setIsFormValid(true)
+        // }
+        // else{
+        //     toast.error("Total must equal to provided random questions")
+        //     setIsFormValid(false)
+        // }
 
         setTimeout(()=>setLoader(false),10);
 
@@ -103,11 +103,12 @@ const TechnologyFieldRandomQuestion = ({formSectionKey}) => {
 
     return (
         
-        <div>
+        <div>   
 
             {
+                loader ? <p className='h-[400px]'>loading...</p> : 
                 Object.keys(allTechnologyObj).map((technology, index)=>(
-                    <ParticularTechnologyRandomQuestion key={index} index={index} options={allTechnologyObj[technology].technologies} formSectionKey={formSectionKey} handleAddNewTechField={handleAddNewTechField} name={technology} allTechnologyObj={allTechnologyObj} initialData={testTypeOptions2} setAllTechnologyObj={setAllTechnologyObj} handleDeleteSpecificField={handleDeleteSpecificField} loader={loader}/>
+                    <ParticularTechnologyRandomQuestion key={technology+index} index={index} options={allTechnologyObj[technology].technologies} formSectionKey={formSectionKey} handleAddNewTechField={handleAddNewTechField} name={technology} initialData={testTypeOptions2} handleDeleteSpecificField={handleDeleteSpecificField} loader={loader} setLoader={setLoader}/>
                 ))
             }
 

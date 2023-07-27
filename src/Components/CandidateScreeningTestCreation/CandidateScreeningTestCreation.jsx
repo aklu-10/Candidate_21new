@@ -13,7 +13,6 @@ const CandidateScreeningTestCreation = () => {
     const formIndex = useRef(1);
     const [loader, setLoader] = useState(false);
 
-
     // base structure - { form1: { form1_Data }, form2: { form2_Data }, ... }
     const [masterData, setMasterData] = useState({ 
 
@@ -31,6 +30,8 @@ const CandidateScreeningTestCreation = () => {
 
         if(isFormValid)
         {
+            console.log(masterData);
+
             let result = Object.keys(masterData.forms).map(form=>{
                 
                 return {
@@ -62,7 +63,15 @@ const CandidateScreeningTestCreation = () => {
                             }}
 
                 })
-                console.log(result)
+
+            let formData = {
+                hiring_request_id:53,
+                level:4,
+                hiring_technologies:["java","angular"],
+                test_types:result
+            }
+
+            console.log(formData)
         }
     }
 

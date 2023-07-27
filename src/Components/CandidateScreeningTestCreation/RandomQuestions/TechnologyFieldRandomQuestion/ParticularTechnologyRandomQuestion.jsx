@@ -1,16 +1,20 @@
-import React, { memo, useContext, useEffect, useState } from "react";
+import React, { memo, useContext, useEffect, useRef, useState } from "react";
 import Field from "../../../Form/Field";
 import FormContext from "../../../../context/FormContext";
+import { TabContext } from "../../CandidateTestSection";
 import { toast } from "react-toastify";
 
-const ParticularTechnologyRandomQuestion = ({options, formSectionKey, handleAddNewTechField, name, allTechnologyObj, initialData, setAllTechnologyObj, index, handleDeleteSpecificField, loader}) => {
+const ParticularTechnologyRandomQuestion = ({options, formSectionKey, handleAddNewTechField, name,  initialData, index, handleDeleteSpecificField, loader, setLoader}) => {
 
     const {masterData, setMasterData, setIsFormValid} = useContext(FormContext);
 
+    const {allTechnologyObj, setAllTechnologyObj} = useContext(TabContext)
+
+    const [selectValue, setSelectValue] = useState(allTechnologyObj[name].selected.value);
+
     useEffect(()=>
     {
-        
-        setMasterData((prev)=>({...prev, forms:{...prev.forms, [formSectionKey]: {...prev.forms[formSectionKey], randomQuestions: { ...prev.forms[formSectionKey].randomQuestions, technology: { ...prev.forms[formSectionKey].randomQuestions.technology ,[name]: { ...prev.forms[formSectionKey].randomQuestions.technology[name], name : options[0].value} }}}}}))
+        setMasterData((prev)=>({...prev, forms:{...prev.forms, [formSectionKey]: {...prev.forms[formSectionKey], randomQuestions: { ...prev.forms[formSectionKey].randomQuestions, technology: { ...prev.forms[formSectionKey].randomQuestions.technology ,[name]: { ...prev.forms[formSectionKey].randomQuestions.technology[name], name : options[0].value } }}}}}))
 
         if(masterData.forms[formSectionKey].managedBy._isMcq === "true")
             setMasterData((prev)=>({...prev, forms: { ...prev.forms, [formSectionKey] : {...prev.forms[formSectionKey], randomQuestions: {...prev.forms[formSectionKey].randomQuestions, technology: { ...prev.forms[formSectionKey].randomQuestions.technology , [name] : { ...prev.forms[formSectionKey].randomQuestions.technology[name], programming:0, descriptive:0 } } } } }}))  
@@ -18,7 +22,7 @@ const ParticularTechnologyRandomQuestion = ({options, formSectionKey, handleAddN
         else
             setMasterData((prev)=>({...prev, forms: { ...prev.forms, [formSectionKey] : {...prev.forms[formSectionKey], randomQuestions: {...prev.forms[formSectionKey].randomQuestions, technology: { ...prev.forms[formSectionKey].randomQuestions.technology , [name] : { ...prev.forms[formSectionKey].randomQuestions.technology[name], mcq:0 } } } } }}))  
 
-    },[masterData.forms[formSectionKey].managedBy._isMcq])
+    },[masterData.forms[formSectionKey].managedBy._isMcq, setLoader])
 
 
     const handleDeleteTechnology = (obj , techName) => 
@@ -250,10 +254,9 @@ const ParticularTechnologyRandomQuestion = ({options, formSectionKey, handleAddN
     function handleSelectTechnology(e)
     {
             // setValue(e.target.value)
-
             let selected = { name:name, selected: {label: e.target.value, value: e.target.value} }
 
-            if(index === Object.keys(allTechnologyObj).length-1)
+            if(Object.keys(allTechnologyObj).slice(-1)[0] === name)
             {
                 setAllTechnologyObj((prev)=>({...prev, [name]:{ ...prev[name], selected: { label:e.target.value, value:e.target.value }}}))                        
             }
@@ -262,6 +265,7 @@ const ParticularTechnologyRandomQuestion = ({options, formSectionKey, handleAddN
                 function changeSelectOptions(obj, selected, initial)
                 {   
                     let removeKeys = [];
+                    let resultObj={...obj};
                     for(let i in obj)
                     {
                         if(i===selected.name)
@@ -269,12 +273,12 @@ const ParticularTechnologyRandomQuestion = ({options, formSectionKey, handleAddN
                         removeKeys.push(i)
                     }
                     
-                    let operationalKeys = Object.keys(obj).filter(key=>!removeKeys.includes(key))
+                    let operationalKeys = Object.keys(resultObj).filter(key=>!removeKeys.includes(key))
                     
 
                     let first;
                     if(removeKeys.length)
-                        first=obj[removeKeys.slice(-1)]
+                        first=resultObj[removeKeys.slice(-1)]
                     
 
                     let selectedTechData = first ?? { technologies:initial, selected:selected.selected};
@@ -283,43 +287,49 @@ const ParticularTechnologyRandomQuestion = ({options, formSectionKey, handleAddN
                     {
                         let res = [];
                         if(key==="technology1")
-                            obj[key].technologies=initial
+                            resultObj[key].technologies=initial
 
                         else{
                                 res = selectedTechData.technologies.filter((tech,index)=>{
                                 return tech.value!=selectedTechData.selected.value
                             })
-                            obj[key].technologies = res;
+                            resultObj[key].technologies = res;
                         }
 
                         if(key==selected.name){
-                            obj[key].selected = selected.selected
+                            resultObj[key].selected = selected.selected
                         }
                         else{
 
-                            if(obj[key].selected.value === selected.selected.value)
+                            if(resultObj[key].selected.value === selected.selected.value)
                             {
-                                obj[key].selected = res[0]
+                                resultObj[key].selected = res[0]
                             }   
 
                         }
                         
-                        selectedTechData = obj[key];
+                        selectedTechData = resultObj[key];
                         
                     })
                     
-                    return obj;
-                    
+                    return resultObj;
                 }
 
-                let res = changeSelectOptions({...allTechnologyObj}, selected, initialData)
+                let updatedAllTechObj = changeSelectOptions({...allTechnologyObj}, selected, initialData)
 
-                setAllTechnologyObj(res);
+
+                setAllTechnologyObj(updatedAllTechObj);
+
+                console.log(updatedAllTechObj)
+
+                setMasterData((prev)=>({...prev, forms:{...prev.forms, [formSectionKey]: {...prev.forms[formSectionKey], randomQuestions: { ...prev.forms[formSectionKey].randomQuestions, technology: { ...prev.forms[formSectionKey].randomQuestions.technology ,[name]: { ...prev.forms[formSectionKey].randomQuestions.technology[name], name : e.target.value} }}}}}))
 
             }
 
+            setSelectValue(e.target.value)
+            setLoader(true);
+            setTimeout(()=>setLoader(false),5);
 
-            setMasterData((prev)=>({...prev, forms:{...prev.forms, [formSectionKey]: {...prev.forms[formSectionKey], randomQuestions: { ...prev.forms[formSectionKey].randomQuestions, technology: { ...prev.forms[formSectionKey].randomQuestions.technology ,[name]: { ...prev.forms[formSectionKey].randomQuestions.technology[name], name : e.target.value} }}}}}))
         } 
 
     return (
@@ -334,10 +344,10 @@ const ParticularTechnologyRandomQuestion = ({options, formSectionKey, handleAddN
                     
                     loader === true ? <p>loading...</p> :
 
-                    <select className="w-[500px] p-2 mt-[25px] border bg-white rounded" defaultValue={allTechnologyObj[name].selected.value} onChange={ !loader && handleSelectTechnology}>
+                    <select className="w-[500px] p-2 mt-[25px] border bg-white rounded" defaultValue={selectValue} onClick={ handleSelectTechnology}>
                         {
                             options.map((option, index)=>(
-                                <option key={index} value={option.value}>{option.label}</option>
+                                <option key={option+index} value={option.value}>{option.label}</option>
                             ))
                         }
                     </select>

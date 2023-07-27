@@ -217,16 +217,11 @@ import { TabContext } from '../CandidateTestSection';
 
     }
 
-    function showError(msg)
-    {
-        toast.info(msg);
-    }
-
     return (
         <div className="relative">
         
         {
-            (Number(masterData.forms[formSectionKey].randomQuestions.totalQuestions) < Number(masterData.forms[formSectionKey].totalQuestions)) &&
+            (Number(masterData.forms[formSectionKey].randomQuestions.totalQuestions) < Number(masterData.forms[formSectionKey].totalQuestions) && Number(masterData.forms[formSectionKey].randomQuestions.totalQuestions)>=0) &&
             <Field
             control="input"
             fieldName={`${formSectionKey}.predefinedQuestions.totalQuestions`}
@@ -332,6 +327,7 @@ import { TabContext } from '../CandidateTestSection';
                     checkboxSelection
                     onCellClick={setSelectedQuestion}
                     onRowSelectionModelChange={setSelectedQuestion}
+                    
                     />
                 </div>
 
@@ -349,7 +345,7 @@ import { TabContext } from '../CandidateTestSection';
             </>
         ) 
         
-            : !masterData.forms[formSectionKey].predefinedQuestions.totalQuestions && masterData.forms[formSectionKey].randomQuestions.totalQuestions!==masterData.forms[formSectionKey].totalQuestions && ((masterData.forms[formSectionKey].randomQuestions.totalQuestions) < masterData.forms[formSectionKey].totalQuestions) && showError("Please provide a value.")
+            : !masterData.forms[formSectionKey].predefinedQuestions.totalQuestions && masterData.forms[formSectionKey].randomQuestions.totalQuestions!==masterData.forms[formSectionKey].totalQuestions && ((masterData.forms[formSectionKey].randomQuestions.totalQuestions) < masterData.forms[formSectionKey].totalQuestions) && masterData.forms[formSectionKey].predefinedQuestions.totalQuestions !== '' && toast.info("Please provide a value.")
         }
         </div>
     );

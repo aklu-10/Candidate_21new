@@ -6,7 +6,9 @@ import { toast } from 'react-toastify';
 
 const Input = ({fieldLabel, fieldType, fieldPlaceHolder, fieldPattern, fieldErrorMsg, fieldName, fieldValue, fieldClass, onChange, stateSetter=null, allowDebounce=false}) => {
 
-    const [value, setValue] = useState(fieldValue);
+
+
+    const [value, setValue] = useState(fieldValue === NaN ? '' : fieldValue);
     const {masterData, setMasterData, setIsFormValid } = useContext(FormContext);
 
     function handleInputChange(e)
@@ -15,8 +17,6 @@ const Input = ({fieldLabel, fieldType, fieldPlaceHolder, fieldPattern, fieldErro
 
         if(fieldName.includes("randomQuestions.totalQuestions") || fieldName.includes("predefinedQuestions.totalQuestions"))
         {   
-
-
             if(Number(e.target.value) > Number(masterData.forms[keys[0]].totalQuestions))
                 toast.error("value exceeds")
 
